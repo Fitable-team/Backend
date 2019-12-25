@@ -1,5 +1,7 @@
 package net.fittable.domain.authentication;
 
+import net.fittable.domain.authentication.enums.MemberAuthority;
+
 import java.time.LocalDateTime;
 
 /**
@@ -18,7 +20,7 @@ public interface Member {
 
     String getEmailAddress();
 
-    String getAuthority();
+    MemberAuthority getAuthority();
 
     boolean isMatchingPassword(String encryptedPassword);
 
