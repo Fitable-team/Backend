@@ -2,7 +2,6 @@ package net.fittable.domain.authentication;
 
 import net.fittable.domain.authentication.enums.MemberAuthority;
 
-import javax.annotation.Generated;
 import javax.persistence.Column;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -25,6 +24,12 @@ public class AdminMember implements Member {
 
     @Column(name = "ADMIN_EMAIL")
     private String emailAddress;
+
+    public AdminMember(String loginId, String encryptedPassword, String emailAddress) {
+        this.loginId = loginId;
+        this.encryptedPassword = encryptedPassword;
+        this.emailAddress = emailAddress;
+    }
 
     @Override
     public String getLoginId() {
