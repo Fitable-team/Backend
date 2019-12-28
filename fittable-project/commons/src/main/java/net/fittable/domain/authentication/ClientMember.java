@@ -31,6 +31,14 @@ public class ClientMember implements Member {
     @Column(name = "MEMBER_EMAIL")
     private String emailAddress;
 
+    public ClientMember(String loginId, String encryptedPassword, LocalDateTime birthday, String phoneNumber, String emailAddress) {
+        this.loginId = loginId;
+        this.encryptedPassword = encryptedPassword;
+        this.birthday = birthday;
+        this.phoneNumber = phoneNumber;
+        this.emailAddress = emailAddress;
+    }
+
     @Override
     public String getLoginId() {
         return this.loginId;
