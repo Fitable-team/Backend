@@ -7,7 +7,9 @@ import net.fittable.domain.premises.Town;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
@@ -28,18 +30,25 @@ public class Store {
     private BusinessOwner owner;
 
     @OneToMany(mappedBy = "targetStore", fetch = FetchType.LAZY)
-    private List<Slot> slots = new ArrayList<>();
+    private Set<Slot> slots = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "STORE_TOWN_ID")
     private Town town;
 
     @Builder
-    public Store(String name, BusinessOwner owner, List<Slot> slots, Town town) {
+    public Store(String name, BusinessOwner owner, Town town) {
         this.name = name;
         this.owner = owner;
-        this.slots = slots;
         this.town = town;
+    }
+
+    public void addSlot(Slot slot) {
+        if(this.slots.contains(slot)) {
+            return;
+        }
+
+        this.slots.add(slot);
     }
 
     public List<Slot> getUnreservedSlots() {
@@ -47,5 +56,4 @@ public class Store {
                 .filter(slot -> !slot.isFullyBooked())
                 .collect(Collectors.toList());
     }
-
 }

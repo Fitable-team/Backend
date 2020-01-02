@@ -1,14 +1,15 @@
 package net.fittable.domain.business;
 
-import net.fittable.domain.authentication.ClientMember;
+import lombok.Builder;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "SLOT")
+@Data
 public class Slot {
 
     @Id
@@ -28,6 +29,16 @@ public class Slot {
     private LocalDateTime endTime;
 
     private int capacity = 1;
+
+    @Builder
+    public Slot(Store targetStore, LocalDateTime startTime, LocalDateTime endTime, int capacity) {
+        this.targetStore = targetStore;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.capacity = capacity;
+
+        targetStore.addSlot(this);
+    }
 
     public boolean isFullyBooked() {
         int requestedCapacity = this.reservations.stream()

@@ -1,5 +1,6 @@
 package net.fittable.domain.business;
 
+import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.ClientMember;
 
@@ -23,4 +24,11 @@ public class Reservation {
     private Slot targetSlot;
 
     private int requestedCapacity = 1;
+
+    @Builder
+    public Reservation(ClientMember reservedClient, Slot targetSlot, int requestedCapacity) {
+        this.reservedClient = reservedClient;
+        this.targetSlot = targetSlot;
+        this.requestedCapacity = requestedCapacity;
+    }
 }
