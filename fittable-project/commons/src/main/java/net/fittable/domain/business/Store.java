@@ -1,5 +1,8 @@
 package net.fittable.domain.business;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import net.fittable.domain.premises.Town;
 
 import javax.persistence.*;
@@ -9,6 +12,7 @@ import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "BUSINESS_STORE")
+@Data
 public class Store {
 
     @Id
@@ -29,6 +33,14 @@ public class Store {
     @ManyToOne
     @JoinColumn(name = "STORE_TOWN_ID")
     private Town town;
+
+    @Builder
+    public Store(String name, BusinessOwner owner, List<Slot> slots, Town town) {
+        this.name = name;
+        this.owner = owner;
+        this.slots = slots;
+        this.town = town;
+    }
 
     public List<Slot> getUnreservedSlots() {
         return this.slots.stream()

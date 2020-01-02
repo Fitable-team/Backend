@@ -1,11 +1,13 @@
 package net.fittable.domain.business;
 
+import lombok.Data;
 import net.fittable.domain.authentication.ClientMember;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "RESERVATION")
+@Data
 public class Reservation {
 
     @Id
@@ -21,28 +23,4 @@ public class Reservation {
     private Slot targetSlot;
 
     private int requestedCapacity = 1;
-
-    public ClientMember getReservedClient() {
-        return reservedClient;
-    }
-
-    public void setReservedClient(ClientMember reservedClient) {
-        this.reservedClient = reservedClient;
-    }
-
-    public Slot getTargetSlot() {
-        return targetSlot;
-    }
-
-    public void setTargetSlot(Slot targetSlot) {
-        this.targetSlot = targetSlot;
-    }
-
-    public int getRequestedCapacity() {
-        return requestedCapacity;
-    }
-
-    public void setRequestedCapacity(int requestedCapacity) {
-        this.requestedCapacity = requestedCapacity;
-    }
 }
