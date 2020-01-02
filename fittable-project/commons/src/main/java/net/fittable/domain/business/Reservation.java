@@ -15,7 +15,7 @@ public class Reservation {
     @GeneratedValue
     private long id;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "CLIENT_ID")
     private ClientMember reservedClient;
 
@@ -23,12 +23,26 @@ public class Reservation {
     @JoinColumn(name = "TARGET_SLOT_ID")
     private Slot targetSlot;
 
+    @OneToOne(mappedBy = "originatedReservation")
+    private Review userReview;
+
     private int requestedCapacity = 1;
+    private boolean used;
+
+    private boolean wasAbsent = false;
 
     @Builder
     public Reservation(ClientMember reservedClient, Slot targetSlot, int requestedCapacity) {
         this.reservedClient = reservedClient;
         this.targetSlot = targetSlot;
         this.requestedCapacity = requestedCapacity;
+    }
+
+    public void markAsAbsent() {
+        this.wasAbsent = true;
+    }
+
+    public boolean userHasWroteReview() {
+        return this.userReview != null;
     }
 }

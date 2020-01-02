@@ -36,6 +36,9 @@ public class Store {
     @JoinColumn(name = "STORE_TOWN_ID")
     private Town town;
 
+    @OneToMany(mappedBy = "targetStore")
+    private List<Review> reviews;
+
     @Builder
     public Store(String name, BusinessOwner owner, Town town) {
         this.name = name;
