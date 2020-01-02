@@ -2,13 +2,11 @@ package net.fittable.domain.authentication;
 
 import net.fittable.domain.authentication.enums.MemberAuthority;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+@Entity
 @Table(name = "SERVICE_ADMIN")
 public class AdminMember implements Member {
 

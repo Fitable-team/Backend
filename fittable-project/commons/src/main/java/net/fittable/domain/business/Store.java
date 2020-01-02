@@ -1,8 +1,11 @@
 package net.fittable.domain.business;
 
+import net.fittable.domain.premises.Town;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "BUSINESS_STORE")
@@ -21,6 +24,16 @@ public class Store {
     private BusinessOwner owner;
 
     @OneToMany(mappedBy = "targetStore", fetch = FetchType.LAZY)
-    private List<Reservation> reservations = new ArrayList<>();
+    private List<Slot> slots = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "STORE_TOWN_ID")
+    private Town town;
+
+    public List<Slot> getUnreservedSlots() {
+        return this.slots.stream()
+                .filter(slot -> !slot.isFullyBooked())
+                .collect(Collectors.toList());
+    }
 
 }
