@@ -45,4 +45,8 @@ public class Reservation {
     public boolean userHasWroteReview() {
         return this.userReview != null;
     }
+
+    public boolean isEligibleForReviewWriting() {
+        return this.userReview == null && this.wasAbsent == false;
+    }
 }
