@@ -11,6 +11,7 @@ import javax.persistence.Enumerated;
 @Embeddable
 @Data
 public class ContactInformation {
+    private static final String CONTACT_INFORMATION_DELIMITER = ";";
 
     @Enumerated(EnumType.STRING)
     @Column(name = "CONTACT_TYPE")
@@ -18,4 +19,10 @@ public class ContactInformation {
 
     @Column(name = "CONTACT")
     private String contactInformationValue;
+
+    public void addPhoneNumber(String phoneNumber) {
+        if(this.contactInformationValue == null || this.contactInformationValue.isEmpty()) {
+
+        }
+    }
 }

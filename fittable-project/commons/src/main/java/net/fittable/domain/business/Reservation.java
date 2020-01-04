@@ -23,7 +23,7 @@ public class Reservation {
     @JoinColumn(name = "TARGET_SLOT_ID")
     private Slot targetSlot;
 
-    @OneToOne(mappedBy = "originatedReservation")
+    @OneToOne(mappedBy = "originatedReservation", cascade = CascadeType.PERSIST)
     private Review userReview;
 
     private int requestedCapacity = 1;
@@ -46,7 +46,7 @@ public class Reservation {
         return this.userReview != null;
     }
 
-    public boolean isEligibleForReviewWriting() {
+    public boolean isEligibleForWritingReview() {
         return this.userReview == null && this.wasAbsent == false;
     }
 }

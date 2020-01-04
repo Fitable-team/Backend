@@ -25,6 +25,8 @@ public class Store {
     @Column(name = "STORE_NAME")
     private String name;
 
+    private String newAddress;
+
     @OneToOne
     @JoinColumn(name = "STORE_OWNER_ID")
     private BusinessOwner owner;

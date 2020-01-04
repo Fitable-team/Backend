@@ -1,7 +1,6 @@
 package net.fittable.domain.business;
 
 import lombok.Data;
-import net.fittable.domain.authentication.ClientMember;
 
 import javax.persistence.*;
 
@@ -17,7 +16,7 @@ public class Review {
     private String content;
     private double starPoint;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "RESERVATION_ID")
     private Reservation originatedReservation;
 
