@@ -7,6 +7,9 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 @Embeddable
 @Data
@@ -22,7 +25,19 @@ public class ContactInformation {
 
     public void addPhoneNumber(String phoneNumber) {
         if(this.contactInformationValue == null || this.contactInformationValue.isEmpty()) {
-
+            this.contactInformationValue = phoneNumber;
         }
+        StringBuilder concatenatedPhoneNumber = new StringBuilder(this.contactInformationValue);
+        concatenatedPhoneNumber.append(CONTACT_INFORMATION_DELIMITER);
+        concatenatedPhoneNumber.append(phoneNumber);
+
+        this.contactInformationValue = concatenatedPhoneNumber.toString();
+    }
+
+    public List<String> getPhoneNumbers() {
+        if(this.contactInformationValue.contains(CONTACT_INFORMATION_DELIMITER)) {
+            return Arrays.asList(this.contactInformationValue.split(CONTACT_INFORMATION_DELIMITER));
+        }
+        return Arrays.asList(this.contactInformationValue);
     }
 }
