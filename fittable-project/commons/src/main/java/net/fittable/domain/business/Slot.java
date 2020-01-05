@@ -25,7 +25,10 @@ public class Slot {
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
     private Store targetStore;
 
+    @Column(name = "SLOT_STARTTIME")
     private LocalDateTime startTime;
+
+    @Column(name = "SLOT_ENDTIME")
     private LocalDateTime endTime;
 
     private int capacity = 1;

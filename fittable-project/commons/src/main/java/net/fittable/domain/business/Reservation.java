@@ -27,7 +27,7 @@ public class Reservation {
     private Review userReview;
 
     private int requestedCapacity = 1;
-    private boolean used;
+    private boolean used = false;
 
     private boolean wasAbsent = false;
 
