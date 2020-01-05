@@ -1,8 +1,9 @@
-package net.fittable.domain.business;
+package net.fittable.domain.business.reservation;
 
 import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.ClientMember;
+import net.fittable.domain.business.Review;
 
 import javax.persistence.*;
 
@@ -21,7 +22,7 @@ public class Reservation {
 
     @ManyToOne
     @JoinColumn(name = "TARGET_SLOT_ID")
-    private Slot targetSlot;
+    private Session targetSession;
 
     @OneToOne(mappedBy = "originatedReservation", cascade = CascadeType.PERSIST)
     private Review userReview;
@@ -32,9 +33,9 @@ public class Reservation {
     private boolean wasAbsent = false;
 
     @Builder
-    public Reservation(ClientMember reservedClient, Slot targetSlot, int requestedCapacity) {
+    public Reservation(ClientMember reservedClient, Session targetSession, int requestedCapacity) {
         this.reservedClient = reservedClient;
-        this.targetSlot = targetSlot;
+        this.targetSession = targetSession;
         this.requestedCapacity = requestedCapacity;
     }
 

@@ -1,12 +1,11 @@
 package net.fittable.domain.business;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Town;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -32,7 +31,7 @@ public class Store {
     private BusinessOwner owner;
 
     @OneToMany(mappedBy = "targetStore", fetch = FetchType.LAZY)
-    private Set<Slot> slots = new HashSet<>();
+    private Set<Session> sessions = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "STORE_TOWN_ID")
@@ -48,17 +47,17 @@ public class Store {
         this.town = town;
     }
 
-    public void addSlot(Slot slot) {
-        if(this.slots.contains(slot)) {
+    public void addSlot(Session session) {
+        if(this.sessions.contains(session)) {
             return;
         }
 
-        this.slots.add(slot);
+        this.sessions.add(session);
     }
 
-    public List<Slot> getUnreservedSlots() {
-        return this.slots.stream()
-                .filter(slot -> !slot.isFullyBooked())
+    public List<Session> getUnreservedSlots() {
+        return this.sessions.stream()
+                .filter(session -> !session.isFullyBooked())
                 .collect(Collectors.toList());
     }
 }

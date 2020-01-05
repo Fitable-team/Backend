@@ -1,6 +1,7 @@
 package net.fittable.domain.business;
 
 import lombok.Data;
+import net.fittable.domain.business.reservation.Session;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -22,14 +23,14 @@ public class Lesson {
     private String description;
 
     @OneToMany
-    private Set<Slot> slots;
+    private Set<Session> sessions;
 
     public boolean isAvailable() {
         return this.getAvailableSlots().size() > 0;
     }
 
-    public Set<Slot> getAvailableSlots() {
-        return this.slots.stream()
+    public Set<Session> getAvailableSlots() {
+        return this.sessions.stream()
                 .filter(s -> !s.isFullyBooked())
                 .collect(Collectors.toSet());
     }

@@ -1,16 +1,17 @@
-package net.fittable.domain.business;
+package net.fittable.domain.business.reservation;
 
 import lombok.Builder;
 import lombok.Data;
+import net.fittable.domain.business.Store;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
-@Table(name = "SLOT")
+@Table(name = "SESSION")
 @Data
-public class Slot {
+public class Session {
 
     @Id
     @GeneratedValue
@@ -25,16 +26,19 @@ public class Slot {
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
     private Store targetStore;
 
-    @Column(name = "SLOT_STARTTIME")
+    @Column(name = "SESSION_STARTTIME")
     private LocalDateTime startTime;
 
-    @Column(name = "SLOT_ENDTIME")
+    @Column(name = "SESSION_ENDTIME")
     private LocalDateTime endTime;
+
+    @Column(name = "SLOT_REGULAR_DAY")
+    private String yoil;
 
     private int capacity = 1;
 
     @Builder
-    public Slot(Store targetStore, LocalDateTime startTime, LocalDateTime endTime, int capacity) {
+    public Session(Store targetStore, LocalDateTime startTime, LocalDateTime endTime, int capacity) {
         this.targetStore = targetStore;
         this.startTime = startTime;
         this.endTime = endTime;

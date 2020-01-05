@@ -1,6 +1,7 @@
 package net.fittable.domain.business;
 
 import lombok.Data;
+import net.fittable.domain.business.reservation.Reservation;
 
 import javax.persistence.*;
 
