@@ -21,8 +21,7 @@ public class RegularSession {
             return;
         }
         String newDay = regularDays;
-        newDay.concat(DAY_DELIMITER).concat(koreanDay);
-        this.regularDays = newDay;
+        this.regularDays = newDay.concat(DAY_DELIMITER).concat(koreanDay);
     }
 
     public Set<Weekday> getWeekdayEnums() {
