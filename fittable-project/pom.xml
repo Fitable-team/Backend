@@ -13,4 +13,12 @@
         <module>api</module>
         <module>commons</module>
     </modules>
+    <dependencies>
+        <dependency>
+            <groupId>net.jqwik</groupId>
+            <artifactId>jqwik</artifactId>
+            <version>1.2.1</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
 </project>
