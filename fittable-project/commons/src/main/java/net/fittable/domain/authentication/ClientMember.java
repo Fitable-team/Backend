@@ -1,13 +1,12 @@
 package net.fittable.domain.authentication;
 
+import lombok.Builder;
 import net.fittable.domain.authentication.enums.MemberAuthority;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
 @Table(name = "MEMBER")
 public class ClientMember implements Member {
 
@@ -31,6 +30,7 @@ public class ClientMember implements Member {
     @Column(name = "MEMBER_EMAIL")
     private String emailAddress;
 
+    @Builder
     public ClientMember(String loginId, String encryptedPassword, LocalDateTime birthday, String phoneNumber, String emailAddress) {
         this.loginId = loginId;
         this.encryptedPassword = encryptedPassword;
