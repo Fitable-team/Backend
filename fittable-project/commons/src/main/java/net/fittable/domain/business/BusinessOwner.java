@@ -19,7 +19,7 @@ public class BusinessOwner {
     private String name;
 
     @OneToOne(mappedBy = "owner")
-    private Store store;
+    private Studio studio;
 
     @ManyToOne
     @JoinColumn(name = "ADMIN_MEMBER_ID")

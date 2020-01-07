@@ -4,5 +4,5 @@ public enum MemberAuthority {
 
     ADMIN,
     MEMBER,
-    SELLER
+    STUDIO_OWNER
 }

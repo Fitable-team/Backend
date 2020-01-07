@@ -4,6 +4,7 @@ import lombok.Data;
 import net.fittable.domain.authentication.enums.MemberAuthority;
 import net.fittable.domain.business.BusinessOwner;
 import net.fittable.domain.business.ContactInformation;
+import net.fittable.domain.business.Studio;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -12,7 +13,7 @@ import java.util.List;
 @Entity
 @Table(name = "STORE_MEMBER")
 @Data
-public class StoreMember implements Member {
+public class StudioOwnerMember implements Member {
 
     @Id
     @GeneratedValue
@@ -28,8 +29,8 @@ public class StoreMember implements Member {
     @Embedded
     private ContactInformation ownerContactInformation;
 
-    @OneToMany(mappedBy = "adminMember", fetch = FetchType.LAZY)
-    private List<BusinessOwner> businessOwners;
+    @OneToMany(mappedBy = "owner", fetch = FetchType.LAZY)
+    private List<Studio> studios;
 
     @Override
     public String getLoginId() {
@@ -53,7 +54,7 @@ public class StoreMember implements Member {
 
     @Override
     public MemberAuthority getAuthority() {
-        return MemberAuthority.SELLER;
+        return MemberAuthority.STUDIO_OWNER;
     }
 
     @Override
