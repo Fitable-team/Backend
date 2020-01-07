@@ -27,7 +27,7 @@ public class Studio {
 
     private String newAddress;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "STUDIO_OWNER_ID")
     private StudioOwnerMember owner;
 
