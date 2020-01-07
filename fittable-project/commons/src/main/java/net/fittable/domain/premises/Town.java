@@ -1,6 +1,6 @@
 package net.fittable.domain.premises;
 
-import net.fittable.domain.business.Store;
+import net.fittable.domain.business.Studio;
 
 import javax.persistence.*;
 import java.util.List;
@@ -21,5 +21,5 @@ public class Town {
     private Coordinate coordinate;
 
     @OneToMany(mappedBy = "town", fetch = FetchType.LAZY)
-    private List<Store> storesIncluded;
+    private List<Studio> storesIncluded;
 }

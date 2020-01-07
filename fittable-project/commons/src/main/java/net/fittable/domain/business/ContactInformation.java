@@ -23,6 +23,9 @@ public class ContactInformation {
     @Column(name = "CONTACT")
     private String contactInformationValue;
 
+    @Column(name = "REPRESENTATIVE_CONTACT")
+    private String representativeContact;
+
     public void addPhoneNumber(String phoneNumber) {
         if(this.contactInformationValue == null || this.contactInformationValue.isEmpty()) {
             this.contactInformationValue = phoneNumber;

@@ -1,9 +1,13 @@
 package net.fittable.domain.business;
 
+import lombok.Data;
+import net.fittable.domain.authentication.AdminMember;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "BUSINESS_OWNER")
+@Data
 public class BusinessOwner {
 
     @Id
@@ -13,6 +17,13 @@ public class BusinessOwner {
 
     @Column(name = "BUSINESS_OWNER_NAME")
     private String name;
+
+    @OneToOne(mappedBy = "owner")
+    private Studio studio;
+
+    @ManyToOne
+    @JoinColumn(name = "ADMIN_MEMBER_ID")
+    private AdminMember adminMember;
 
     @Embedded
     private ContactInformation contactInformation;

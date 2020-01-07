@@ -2,7 +2,7 @@ package net.fittable.domain.business.reservation;
 
 import lombok.Builder;
 import lombok.Data;
-import net.fittable.domain.business.Store;
+import net.fittable.domain.business.Studio;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -24,7 +24,7 @@ public class Session {
 
     @ManyToOne
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
-    private Store targetStore;
+    private Studio targetStudio;
 
     @Column(name = "SESSION_STARTTIME")
     private LocalDateTime startTime;
@@ -38,13 +38,13 @@ public class Session {
     private int capacity = 1;
 
     @Builder
-    public Session(Store targetStore, LocalDateTime startTime, LocalDateTime endTime, int capacity) {
-        this.targetStore = targetStore;
+    public Session(Studio targetStudio, LocalDateTime startTime, LocalDateTime endTime, int capacity) {
+        this.targetStudio = targetStudio;
         this.startTime = startTime;
         this.endTime = endTime;
         this.capacity = capacity;
 
-        targetStore.addSlot(this);
+        targetStudio.addSlot(this);
     }
 
     public boolean isFullyBooked() {

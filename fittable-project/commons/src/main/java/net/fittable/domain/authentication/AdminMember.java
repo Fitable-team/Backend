@@ -3,9 +3,11 @@ package net.fittable.domain.authentication;
 import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.enums.MemberAuthority;
+import net.fittable.domain.business.BusinessOwner;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -15,9 +17,10 @@ public class AdminMember implements Member {
 
     @Id
     @GeneratedValue
+    @Column(name = "ADMIN_MEMBER_ID")
     private long id;
 
-    @Column(name = "ADMIN_MEMBER")
+    @Column(name = "ADMIN_MEMBER_LOGINID")
     private String loginId;
 
     @Column(name = "ADMIN_PASSWORD")

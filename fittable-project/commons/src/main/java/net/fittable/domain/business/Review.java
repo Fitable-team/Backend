@@ -23,5 +23,5 @@ public class Review {
 
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
-    private Store targetStore;
+    private Studio targetStudio;
 }

@@ -2,6 +2,7 @@ package net.fittable.domain.business;
 
 import lombok.Builder;
 import lombok.Data;
+import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Town;
 
@@ -12,25 +13,25 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Entity
-@Table(name = "BUSINESS_STORE")
+@Table(name = "STUDIO")
 @Data
-public class Store {
+public class Studio {
 
     @Id
     @GeneratedValue
-    @Column(name = "STORE_ID")
+    @Column(name = "STUDIO_ID")
     private long id;
 
-    @Column(name = "STORE_NAME")
+    @Column(name = "STUDIO_NAME")
     private String name;
 
     private String newAddress;
 
-    @OneToOne
-    @JoinColumn(name = "STORE_OWNER_ID")
-    private BusinessOwner owner;
+    @ManyToOne
+    @JoinColumn(name = "STUDIO_OWNER_ID")
+    private StudioOwnerMember owner;
 
-    @OneToMany(mappedBy = "targetStore", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "targetStudio", fetch = FetchType.LAZY)
     private Set<Session> sessions = new HashSet<>();
 
     @ManyToOne
@@ -41,7 +42,7 @@ public class Store {
     private List<Review> reviews;
 
     @Builder
-    public Store(String name, BusinessOwner owner, Town town) {
+    public Studio(String name, StudioOwnerMember owner, Town town) {
         this.name = name;
         this.owner = owner;
         this.town = town;
