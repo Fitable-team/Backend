@@ -38,7 +38,7 @@ public class Studio {
     @JoinColumn(name = "STORE_TOWN_ID")
     private Town town;
 
-    @OneToMany(mappedBy = "targetStore")
+    @OneToMany(mappedBy = "targetStudio")
     private List<Review> reviews;
 
     @Builder
