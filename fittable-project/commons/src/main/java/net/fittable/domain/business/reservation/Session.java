@@ -26,23 +26,33 @@ public class Session {
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
     private Studio targetStudio;
 
+    @Column(name = "SESSION_INSTRUCTOR")
+    private String instructorName;
+
+    @Column(name = "SESSION_ROOM")
+    private String room;
+
+    @Column(name = "SESSION_PRICE")
+    private Integer price;
+
     @Column(name = "SESSION_STARTTIME")
     private LocalDateTime startTime;
 
     @Column(name = "SESSION_ENDTIME")
     private LocalDateTime endTime;
 
-    @Column(name = "SLOT_REGULAR_DAY")
-    private String yoil;
+    @Column(name = "SESSION_REGULAR_DAY")
+    private RegularSession regularSession;
 
     private int capacity = 1;
 
     @Builder
-    public Session(Studio targetStudio, LocalDateTime startTime, LocalDateTime endTime, int capacity) {
+    public Session(Studio targetStudio, LocalDateTime startTime, LocalDateTime endTime, int capacity, String instructorName) {
         this.targetStudio = targetStudio;
         this.startTime = startTime;
         this.endTime = endTime;
         this.capacity = capacity;
+        this.instructorName = instructorName;
 
         targetStudio.addSession(this);
     }

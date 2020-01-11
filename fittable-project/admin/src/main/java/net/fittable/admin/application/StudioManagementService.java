@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class StudioManagementService {
@@ -55,5 +56,13 @@ public class StudioManagementService {
             matchingReservations.addAll(s.getReservations());
         }
         return matchingReservations;
+    }
+
+    @Transactional
+    public void acceptReservations(List<Long> reservationIds) {
+        reservationRepository.saveAll(reservationRepository.findAllById(reservationIds)
+                .stream()
+                .peek(Reservation::markAsAccepted)
+                .collect(Collectors.toSet()));
     }
 }

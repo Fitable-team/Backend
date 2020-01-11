@@ -3,7 +3,6 @@ package net.fittable.domain.business;
 import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.StudioOwnerMember;
-import net.fittable.domain.business.reservation.Reservation;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Town;
 import net.fittable.persistence.converters.SocialAddressConverter;
@@ -30,6 +29,12 @@ public class Studio {
 
     @Column(name = "STUDIO_DETAILED_ADDRESS")
     private String detailedAddress;
+
+    @Column(name = "STUDIO_LATITUDE")
+    private Double latitude;
+
+    @Column(name = "STUDIO_LONGITUDE")
+    private Double longitude;
 
     @ManyToOne
     @JoinColumn(name = "STUDIO_OWNER_ID")

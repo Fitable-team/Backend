@@ -29,7 +29,7 @@ public class Reservation {
 
     private int requestedCapacity = 1;
     private boolean used = false;
-
+    private boolean accepted = false;
     private boolean wasAbsent = false;
 
     @Builder
@@ -37,6 +37,10 @@ public class Reservation {
         this.reservedClient = reservedClient;
         this.targetSession = targetSession;
         this.requestedCapacity = requestedCapacity;
+    }
+
+    public void markAsAccepted() {
+        this.accepted = true;
     }
 
     public void markAsAbsent() {
