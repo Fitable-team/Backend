@@ -10,15 +10,13 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
-import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 import java.util.Map;
-import java.util.Properties;
 
 @Configuration
-@EnableJpaRepositories(basePackages = "net.fittable.admin.infrastructure.repositories", entityManagerFactoryRef = "entityManagerFactory")
+@EnableJpaRepositories(basePackages = "net.fittable.admin.infrastructure.repositories", entityManagerFactoryRef = "entityManagerFactoryBean")
 public class DatasourceConfiguration {
 
     @Autowired
@@ -35,8 +33,8 @@ public class DatasourceConfiguration {
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
-        LocalContainerEntityManagerFactoryBean factoryBean = new LocalContainerEntityManagerFactoryBean();
-        Map<String, Object> properties = this.hibernateProperties.determineHibernateProperties(this.jpaProperties.getProperties(), new HibernateSettings());
+        Map<String, Object> properties = this.hibernateProperties
+                .determineHibernateProperties(this.jpaProperties.getProperties(), new HibernateSettings());
 
         return this.builder
                 .dataSource(this.dataSource)
@@ -44,22 +42,5 @@ public class DatasourceConfiguration {
                 .packages("net.fittable.domain")
                 .persistenceUnit("default")
                 .build();
-    }
-
-    @Bean
-    @Primary
-    public EntityManagerFactory entityManagerFactory() {
-        return entityManagerFactoryBean().getObject();
-    }
-
-    private Properties fetchJpaProperties() {
-        Properties properties = new Properties();
-        Map<String, String> jpaProperties = this.jpaProperties.getProperties();
-
-        for(String key: jpaProperties.keySet()) {
-            properties.setProperty(key, jpaProperties.get(key));
-        }
-
-        return properties;
     }
 }

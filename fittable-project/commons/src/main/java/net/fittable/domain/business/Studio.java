@@ -6,6 +6,8 @@ import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.business.reservation.Reservation;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Town;
+import net.fittable.persistence.converters.SocialAddressConverter;
+import net.fittable.persistence.converters.StudioImageListConverter;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -43,7 +45,12 @@ public class Studio {
     @OneToMany(mappedBy = "targetStudio")
     private List<Review> reviews;
 
+    @Column(name = "STUDIO_SOCIAL_CONTACT")
+    @Convert(converter = SocialAddressConverter.class)
+    private SocialAddress socialAddress;
+
     @Column(name = "STUDIO_IMAGE_LIST")
+    @Convert(converter = StudioImageListConverter.class)
     private StudioImageList imageList;
 
     @Column(name = "STUDIO_INTRO_MOVIE")
