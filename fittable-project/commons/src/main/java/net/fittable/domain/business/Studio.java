@@ -3,6 +3,7 @@ package net.fittable.domain.business;
 import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.StudioOwnerMember;
+import net.fittable.domain.business.reservation.Reservation;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Town;
 
@@ -58,7 +59,7 @@ public class Studio {
         this.town = town;
     }
 
-    public void addSlot(Session session) {
+    public void addSession(Session session) {
         if(this.sessions.contains(session)) {
             return;
         }
@@ -66,7 +67,7 @@ public class Studio {
         this.sessions.add(session);
     }
 
-    public List<Session> getUnreservedSlots() {
+    public List<Session> getUnreservedSessions() {
         return this.sessions.stream()
                 .filter(session -> !session.isFullyBooked())
                 .collect(Collectors.toList());

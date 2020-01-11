@@ -44,7 +44,7 @@ public class Session {
         this.endTime = endTime;
         this.capacity = capacity;
 
-        targetStudio.addSlot(this);
+        targetStudio.addSession(this);
     }
 
     public boolean isFullyBooked() {
