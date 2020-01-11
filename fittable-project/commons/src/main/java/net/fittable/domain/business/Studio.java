@@ -25,7 +25,8 @@ public class Studio {
     @Column(name = "STUDIO_NAME")
     private String name;
 
-    private String newAddress;
+    @Column(name = "STUDIO_DETAILED_ADDRESS")
+    private String detailedAddress;
 
     @ManyToOne
     @JoinColumn(name = "STUDIO_OWNER_ID")
@@ -40,6 +41,15 @@ public class Studio {
 
     @OneToMany(mappedBy = "targetStudio")
     private List<Review> reviews;
+
+    @Column(name = "STUDIO_IMAGE_LIST")
+    private StudioImageList imageList;
+
+    @Column(name = "STUDIO_INTRO_MOVIE")
+    private String introductionMovie;
+
+    @Column(name = "STUDIO_DIRECTIONS")
+    private String directions;
 
     @Builder
     public Studio(String name, StudioOwnerMember owner, Town town) {
