@@ -4,8 +4,11 @@ import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.ClientMember;
 import net.fittable.domain.business.Review;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "RESERVATION")
@@ -31,6 +34,12 @@ public class Reservation {
     private boolean used = false;
     private boolean accepted = false;
     private boolean wasAbsent = false;
+
+    @CreatedDate
+    private LocalDateTime reservedDateTime;
+
+    @LastModifiedDate
+    private LocalDateTime lastModifiedDate;
 
     @Builder
     public Reservation(ClientMember reservedClient, Session targetSession, int requestedCapacity) {
