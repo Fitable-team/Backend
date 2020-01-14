@@ -1,0 +1,42 @@
+.fitable-login {
+    background-color: white;
+}
+
+.login-center-component {
+    text-align: center;
+    margin-top: 20%;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.login-inputbox {
+    width: 300px;
+}
+
+.login-center-inputbox {
+    margin-top: 30px;
+}
+.login-userid {
+    margin-bottom: 20px;
+}
+.login-id-box {
+    display: inline-block;
+}
+
+.login-pwd-box {
+    display: inline-block;
+}
+
+.login-center-buttongroup {
+    margin-top: 30px;
+}
+
+.login-button-box {
+    width: 300px;
+    margin-bottom: 10px;
+}
+
+.login-pwd-forgot {
+    color: grey;
+    text-decoration: underline;
+}
