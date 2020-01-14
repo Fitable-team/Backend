@@ -1,12 +1,11 @@
 package net.fittable.admin.infrastructure.components.security.dto;
 
 import lombok.Data;
+import net.fittable.domain.authentication.Member;
 import net.fittable.domain.authentication.enums.MemberAuthority;
 import org.springframework.security.authentication.AbstractAuthenticationToken;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Data
@@ -14,22 +13,30 @@ public class FormLoginToken extends AbstractAuthenticationToken {
 
     private String userId;
     private String password;
+    private Member principal;
 
     public FormLoginToken(String userId, String password) {
         super(null);
+
+        this.userId = userId;
+        this.password = password;
     }
 
-    public FormLoginToken(String userId, String password, MemberAuthority authority) {
-        super(Collections.singletonList(new SimpleGrantedAuthority(authority.name())));
+    public FormLoginToken(String userId, String password, Member processedPrincipal) {
+        super(Collections.singletonList(new SimpleGrantedAuthority(processedPrincipal.getAuthority().name())));
+
+        this.userId = userId;
+        this.password = password;
+        this.principal = processedPrincipal;
     }
 
     @Override
-    public Object getCredentials() {
+    public String getCredentials() {
         return this.password;
     }
 
     @Override
-    public Object getPrincipal() {
-        return this.userId;
+    public Member getPrincipal() {
+        return this.principal;
     }
 }
