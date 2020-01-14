@@ -33,7 +33,6 @@ public class Reservation {
     private int requestedCapacity = 1;
     private boolean used = false;
     private boolean accepted = false;
-    private boolean wasAbsent = false;
 
     @CreatedDate
     private LocalDateTime reservedDateTime;
@@ -52,15 +51,11 @@ public class Reservation {
         this.accepted = true;
     }
 
-    public void markAsAbsent() {
-        this.wasAbsent = true;
-    }
-
     public boolean userHasWroteReview() {
         return this.userReview != null;
     }
 
     public boolean isEligibleForWritingReview() {
-        return this.userReview == null && this.wasAbsent == false;
+        return this.userReview == null;
     }
 }
