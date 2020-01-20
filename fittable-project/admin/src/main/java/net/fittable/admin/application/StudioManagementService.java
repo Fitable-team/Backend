@@ -79,7 +79,7 @@ public class StudioManagementService {
                     .collect(Collectors.toList());
 
         for(Reservation r: reservations) {
-            r.setAccepted(true);
+            r.markAsAccepted();
         }
 
         notifyService.sendToGroup(clientContacts);
