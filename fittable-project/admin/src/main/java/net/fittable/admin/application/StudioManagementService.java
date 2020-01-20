@@ -65,15 +65,4 @@ public class StudioManagementService {
                 .peek(Reservation::markAsAccepted)
                 .collect(Collectors.toSet()));
     }
-
-    @Transactional
-    public void checkReservationAsUsed(List<Long> reservationIds) {
-
-    }
-
-    @Transactional
-    public void checkAsAbsent(List<Reservation> reservation) {
-        reservationRepository.saveAll(reservation.stream()
-                .peek(r -> r.setWasAbsent(true)).collect(Collectors.toSet()));
-    }
 }
