@@ -1,6 +1,7 @@
 package net.fittable.domain.authentication;
 
 import lombok.Builder;
+import lombok.Data;
 import net.fittable.domain.authentication.enums.MemberAuthority;
 import net.fittable.domain.authentication.enums.SocialProvider;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MEMBER")
+@Data
 public class ClientMember implements Member {
 
     @Id
