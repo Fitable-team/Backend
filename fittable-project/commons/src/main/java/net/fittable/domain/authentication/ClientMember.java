@@ -2,6 +2,7 @@ package net.fittable.domain.authentication;
 
 import lombok.Builder;
 import net.fittable.domain.authentication.enums.MemberAuthority;
+import net.fittable.domain.authentication.enums.SocialProvider;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -14,6 +15,10 @@ public class ClientMember implements Member {
     @GeneratedValue
     @Column(name = "MEMBER_SEQUENCE")
     private long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "CLIENT_SOCIAL_PROVIDER")
+    private SocialProvider socialProvider;
 
     @Column(name = "MEMBER_ID")
     private String loginId;
