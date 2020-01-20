@@ -1,12 +1,16 @@
 package net.fittable.admin.application;
 
+import net.fittable.admin.application.components.specifications.SMSNotifyService;
 import net.fittable.admin.infrastructure.repositories.ReservationRepository;
 import net.fittable.admin.infrastructure.repositories.SessionRepository;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
+import net.fittable.domain.authentication.ClientMember;
 import net.fittable.domain.authentication.Member;
 import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.authentication.enums.MemberAuthority;
+import net.fittable.domain.business.ContactInformation;
 import net.fittable.domain.business.Studio;
+import net.fittable.domain.business.enums.ContactInformationType;
 import net.fittable.domain.business.reservation.Reservation;
 import net.fittable.domain.business.reservation.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,9 @@ import java.util.stream.Collectors;
 public class StudioManagementService {
 
     @Autowired
+    private MemberManagementService memberManagementService;
+
+    @Autowired
     private StudioRepository studioRepository;
 
     @Autowired
@@ -29,8 +36,11 @@ public class StudioManagementService {
     @Autowired
     private SessionRepository sessionRepository;
 
-    public void addNewStudio(Studio studio, StudioOwnerMember member) {
-        studio.setOwner(member);
+    private SMSNotifyService notifyService;
+
+    @Transactional
+    public void addNewStudio(Studio studio, ContactInformation contactInformation) {
+        studio.setOwner(memberManagementService.generateNewMember(contactInformation));
 
         studioRepository.save(studio);
     }
@@ -60,9 +70,20 @@ public class StudioManagementService {
 
     @Transactional
     public void acceptReservations(List<Long> reservationIds) {
-        reservationRepository.saveAll(reservationRepository.findAllById(reservationIds)
-                .stream()
-                .peek(Reservation::markAsAccepted)
-                .collect(Collectors.toSet()));
+        List<Reservation> reservations = reservationRepository.findAllById(reservationIds);
+        List<ContactInformation> clientContacts =
+                reservations.stream()
+                    .map(Reservation::getReservedClient)
+                    .map(ClientMember::getPhoneNumber)
+                    .map(n -> new ContactInformation(ContactInformationType.CELLPHONE, n))
+                    .collect(Collectors.toList());
+
+        for(Reservation r: reservations) {
+            r.setAccepted(true);
+        }
+
+        notifyService.sendToGroup(clientContacts);
+        this.reservationRepository.saveAll(reservations);
     }
+
 }
