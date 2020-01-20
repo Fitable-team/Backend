@@ -16,7 +16,6 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
     @Value("authentication.login.landingpage")
     private String redirectionTarget;
 
-
     @Override
     public void onAuthenticationSuccess(HttpServletRequest req, HttpServletResponse res, Authentication auth) throws IOException {
         SecurityContextHolder.getContext().setAuthentication(auth);
