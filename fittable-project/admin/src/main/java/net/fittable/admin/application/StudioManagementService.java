@@ -1,5 +1,6 @@
 package net.fittable.admin.application;
 
+import com.sun.corba.se.pept.transport.ContactInfo;
 import net.fittable.admin.application.components.specifications.SMSNotifyService;
 import net.fittable.admin.infrastructure.repositories.ReservationRepository;
 import net.fittable.admin.infrastructure.repositories.SessionRepository;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,6 +86,17 @@ public class StudioManagementService {
 
         notifyService.sendToGroup(clientContacts);
         this.reservationRepository.saveAll(reservations);
+    }
+
+    @Transactional
+    public void declineReservation(Long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow(() -> new NoSuchElementException("ID로 조회된 예약이 없습니다."));
+        ContactInformation clientContactInformation = new ContactInformation(ContactInformationType.CELLPHONE, reservation.getReservedClient().getPhoneNumber());
+
+        notifyService.sendToSingle(clientContactInformation);
+
+        reservation.setAccepted(false);
+        reservationRepository.save(reservation);
     }
 
 }

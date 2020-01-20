@@ -37,6 +37,9 @@ public class ClientMember implements Member {
     @Column(name = "MEMBER_EMAIL")
     private String emailAddress;
 
+    @Column(name = "MEMBER_IS_IN_PENALTY")
+    private boolean inPenalty;
+
     @Builder
     public ClientMember(String loginId, String encryptedPassword, LocalDateTime birthday, String phoneNumber, String emailAddress) {
         this.loginId = loginId;
@@ -74,5 +77,9 @@ public class ClientMember implements Member {
     @Override
     public boolean isMatchingPassword(String encryptedPassword) {
         return encryptedPassword.equals(this.encryptedPassword);
+    }
+
+    public void setAsPenaltyState() {
+        this.inPenalty = true;
     }
 }
