@@ -39,6 +39,10 @@ public class Session {
     @Column(name = "SESSION_PRICE")
     private Integer price;
 
+    @Column(name = "SESSION_LEVEL")
+    @Enumerated(EnumType.STRING)
+    private ClassLevel classLevel;
+
     @Column(name = "SESSION_STARTTIME")
     private LocalDateTime startTime;
 
