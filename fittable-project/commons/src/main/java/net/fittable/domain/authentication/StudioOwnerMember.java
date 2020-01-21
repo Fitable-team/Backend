@@ -5,10 +5,12 @@ import net.fittable.domain.authentication.enums.MemberAuthority;
 import net.fittable.domain.business.BusinessOwner;
 import net.fittable.domain.business.ContactInformation;
 import net.fittable.domain.business.Studio;
+import net.fittable.helper.UniqueIDGenerator;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "STORE_MEMBER")
@@ -19,6 +21,9 @@ public class StudioOwnerMember implements Member {
     @GeneratedValue
     @Column(name = "STORE_MEMBER_ID")
     private long id;
+
+    @Column(name = "STORE_MEMBER_UNIQUEID")
+    private String uniqueId = UniqueIDGenerator.generateEntityId();
 
     @Column(name = "STORE_MEMBER_LOGINID")
     private String loginId;
@@ -60,5 +65,18 @@ public class StudioOwnerMember implements Member {
     @Override
     public boolean isMatchingPassword(String encryptedPassword) {
         return this.encryptedPassword.equals(encryptedPassword);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        StudioOwnerMember member = (StudioOwnerMember) o;
+        return uniqueId.equals(member.uniqueId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uniqueId);
     }
 }

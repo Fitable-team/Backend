@@ -1,7 +1,9 @@
 package net.fittable.domain.business.reservation;
 
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Setter;
 import net.fittable.domain.authentication.ClientMember;
 import net.fittable.domain.business.Review;
 import org.springframework.data.annotation.CreatedDate;
@@ -33,6 +35,8 @@ public class Reservation {
     private int requestedCapacity = 1;
     private boolean used = false;
     private boolean accepted = false;
+
+    @Setter(AccessLevel.NONE)
     private boolean canceled = false;
 
     @CreatedDate
@@ -40,6 +44,9 @@ public class Reservation {
 
     @LastModifiedDate
     private LocalDateTime lastModifiedDate;
+
+    @Setter(AccessLevel.NONE)
+    private LocalDateTime canceledDateTime;
 
     @Builder
     public Reservation(ClientMember reservedClient, Session targetSession, int requestedCapacity) {
@@ -53,6 +60,12 @@ public class Reservation {
             throw new IllegalArgumentException("예약 요청 인원이 열려있는 인원을 초과하였습니다.");
         }
         this.requestedCapacity = requestedCapacity;
+    }
+
+    public void markAsCanceled() {
+        this.canceledDateTime = LocalDateTime.now();
+
+        this.canceled = true;
     }
 
     public void markAsAccepted() {
