@@ -33,6 +33,7 @@ public class Reservation {
     private int requestedCapacity = 1;
     private boolean used = false;
     private boolean accepted = false;
+    private boolean canceled = false;
 
     @CreatedDate
     private LocalDateTime reservedDateTime;
@@ -44,6 +45,13 @@ public class Reservation {
     public Reservation(ClientMember reservedClient, Session targetSession, int requestedCapacity) {
         this.reservedClient = reservedClient;
         this.targetSession = targetSession;
+        this.requestedCapacity = requestedCapacity;
+    }
+
+    public void setRequestedCapacity(int requestedCapacity) {
+        if(this.targetSession.getCapacity() <= requestedCapacity) {
+            throw new IllegalArgumentException("예약 요청 인원이 열려있는 인원을 초과하였습니다.");
+        }
         this.requestedCapacity = requestedCapacity;
     }
 
