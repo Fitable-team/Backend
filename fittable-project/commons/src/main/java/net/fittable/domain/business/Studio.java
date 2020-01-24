@@ -9,6 +9,8 @@ import net.fittable.persistence.converters.SocialAddressConverter;
 import net.fittable.persistence.converters.StudioImageListConverter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,9 +27,12 @@ public class Studio {
     private long id;
 
     @Column(name = "STUDIO_NAME")
+    @NotEmpty
+    @Size(min = 1, max = 100, message = "이름은 1~100자 사이로 입력해 주세요.")
     private String name;
 
     @Column(name = "STUDIO_DETAILED_ADDRESS")
+    @Size(min = 1, max = 500)
     private String detailedAddress;
 
     @Column(name = "STUDIO_LATITUDE")

@@ -3,15 +3,23 @@ package net.fittable.domain.business;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.StringJoiner;
 
 @Data
 @AllArgsConstructor
 public class SocialAddress {
 
+    @NotEmpty
     private String kakaoId;
+
+    @NotEmpty
     private String instagramAddress;
+
+    @NotEmpty
     private String homepage;
+
+    @NotEmpty
     private String facebookAddress;
 
     public String concatAddresses() {
