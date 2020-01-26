@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.Setter;
 import net.fittable.domain.authentication.ClientMember;
+import net.fittable.domain.business.BatchDeletable;
 import net.fittable.domain.business.Review;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -15,7 +16,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "RESERVATION")
 @Data
-public class Reservation {
+public class Reservation implements BatchDeletable {
 
     @Id
     @GeneratedValue
@@ -78,5 +79,10 @@ public class Reservation {
 
     public boolean isEligibleForWritingReview() {
         return this.userReview == null;
+    }
+
+    @Override
+    public boolean isInBatchEvictionTarget() {
+        return this.canceled;
     }
 }

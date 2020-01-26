@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "STORE_REVIEW")
 @Data
-public class Review {
+public class Review implements BatchDeletable {
 
     @Id
     @GeneratedValue
@@ -41,5 +41,10 @@ public class Review {
         }
 
         return this.originatedReservation.getTargetSession().getTargetStudio().getOwner().equals(member);
+    }
+
+    @Override
+    public boolean isInBatchEvictionTarget() {
+        return this.deleted;
     }
 }
