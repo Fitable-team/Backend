@@ -21,6 +21,8 @@ public class Review {
 
     private String ownersReply;
 
+    private boolean deleted;
+
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "RESERVATION_ID")
     private Reservation originatedReservation;
