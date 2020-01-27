@@ -1,5 +1,6 @@
 import React from 'react';
 import LoginScreen from './screens/LoginScreen';
+import AdminScreen from './screens/AdminScreen'
 
 class AdminApp extends React.Component {
 
@@ -8,7 +9,7 @@ class AdminApp extends React.Component {
     }
 
     render() {
-        return(<LoginScreen/>)
+        return(<AdminScreen/>)
     }
 }
 
