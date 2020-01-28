@@ -50,19 +50,23 @@ public class Session {
     private LocalDateTime endTime;
 
     @Column(name = "SESSION_REGULAR_DAY")
+    @Embedded
     private RegularSession regularSession;
 
     private int capacity = 1;
 
     @Builder
-    public Session(Studio targetStudio, LocalDateTime startTime, LocalDateTime endTime, int capacity, String instructorName) {
+    public Session(List<Reservation> reservations, Studio targetStudio, String instructorName, String room, Integer price, ClassLevel classLevel, LocalDateTime startTime, LocalDateTime endTime, RegularSession regularSession, int capacity) {
+        this.reservations = reservations;
         this.targetStudio = targetStudio;
+        this.instructorName = instructorName;
+        this.room = room;
+        this.price = price;
+        this.classLevel = classLevel;
         this.startTime = startTime;
         this.endTime = endTime;
+        this.regularSession = regularSession;
         this.capacity = capacity;
-        this.instructorName = instructorName;
-
-        targetStudio.addSession(this);
     }
 
     public boolean isFullyBooked() {

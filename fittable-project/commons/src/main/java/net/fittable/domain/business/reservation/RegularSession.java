@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.Embeddable;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -28,5 +29,9 @@ public class RegularSession {
         return Arrays.stream(this.regularDays.split(DAY_DELIMITER))
                 .map(day -> Weekday.getByKoreanDay(day))
                 .collect(Collectors.toSet());
+    }
+
+    public RegularSession(List<String> repeatDays) {
+        this.regularDays = String.join(DAY_DELIMITER, repeatDays);
     }
 }
