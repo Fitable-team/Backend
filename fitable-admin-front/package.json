@@ -15,6 +15,7 @@
     "react-metismenu": "^1.4.0",
     "react-scripts": "3.3.0",
     "react-sidebar": "^3.0.2",
+    "react-tabs": "^3.1.0",
     "react-web-tabs": "^1.0.1",
     "stylus": "^0.54.7",
     "stylus-loader": "^3.0.2"
