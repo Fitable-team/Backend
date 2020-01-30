@@ -1,6 +1,8 @@
 package net.fittable.admin.infrastructure.components.security.filter;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import net.fittable.admin.infrastructure.components.security.dto.FormLoginToken;
+import net.fittable.admin.view.dto.LoginRequestDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -27,10 +29,10 @@ public class FormLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res) throws AuthenticationException, IOException, ServletException {
-        String userId = req.getParameter("id");
-        String password = req.getParameter("password");
+        ObjectMapper objectMapper = new ObjectMapper();
+        LoginRequestDto dto = objectMapper.readValue(req.getInputStream(), LoginRequestDto.class);
 
-        FormLoginToken token = new FormLoginToken(userId, password);
+        FormLoginToken token = dto.toToken();
 
         return super.getAuthenticationManager().authenticate(token);
     }

@@ -6,6 +6,9 @@ import net.fittable.admin.application.components.specifications.FileUploadServic
 import net.fittable.admin.infrastructure.components.security.dto.FormLoginToken;
 import net.fittable.admin.view.dto.BaseApiResult;
 import net.fittable.admin.view.dto.TimetableManageDto;
+import net.fittable.domain.authentication.Member;
+import net.fittable.domain.authentication.enums.MemberAuthority;
+import net.fittable.domain.business.Studio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,6 +16,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController("/api/admin")
 public class AdminApi {
@@ -31,16 +36,26 @@ public class AdminApi {
         return "hello";
     }
 
+    @GetMapping("/studio-list")
+    @PreAuthorize("#hasRole('ADMIN') OR hasRole('STUDIO_MEMBER')")
+    public List<Studio> getStudioList(@AuthenticationPrincipal FormLoginToken memberToken) {
+        Member loginMember = memberToken.getPrincipal();
+
+        return studioManagementService.getAllOwnedStudios(loginMember);
+    }
+
     @PostMapping("/studio-image")
-    @PreAuthorize("#{hasRole('ADMIN')}")
+    @PreAuthorize("#hasRole('ADMIN')")
     public String postImage(MultipartFile image, @AuthenticationPrincipal FormLoginToken memberToken) {
 
         return fileUploadService.uploadMultipartFile(memberToken.getPrincipal(), image);
     }
 
     @PostMapping("/edit-timetable")
-    @PreAuthorize("#{hasRole(['ADMIN', 'STUDIO_MEMBER')")
+    @PreAuthorize("#hasRole('ADMIN') OR hasRole('STUDIO_MEMBER')")
     public BaseApiResult editTimeTable(TimetableManageDto dto) {
-        return null;
+        studioManagementService.editTimetable(dto);
+
+        return BaseApiResult.ok();
     }
 }

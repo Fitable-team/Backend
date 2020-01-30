@@ -66,7 +66,11 @@ public class StudioManagementService {
 
     }
 
-    public List<Studio> getAllOwnedStudios(StudioOwnerMember member) {
-        return studioRepository.findByOwner(member);
+    public List<Studio> getAllOwnedStudios(Member member) {
+        if(member.getAuthority() == MemberAuthority.ADMIN) {
+            return studioRepository.findAll();
+        }
+
+        return studioRepository.findByOwner((StudioOwnerMember)member);
     }
 }
