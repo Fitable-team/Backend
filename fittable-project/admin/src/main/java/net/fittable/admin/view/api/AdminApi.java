@@ -44,10 +44,15 @@ public class AdminApi {
         return studioManagementService.getAllOwnedStudios(loginMember);
     }
 
+    @PostMapping("/new-studio")
+    @PreAuthorize("#hasRole('ADMIN') OR hasRole('STUDIO_MEMBER')")
+    public BaseApiResult registerNewStudio() {
+        return null;
+    }
+
     @PostMapping("/studio-image")
     @PreAuthorize("#hasRole('ADMIN')")
     public String postImage(MultipartFile image, @AuthenticationPrincipal FormLoginToken memberToken) {
-
         return fileUploadService.uploadMultipartFile(memberToken.getPrincipal(), image);
     }
 
