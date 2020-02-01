@@ -17,25 +17,14 @@ public class LocalFileUploadService implements FileUploadService {
     @Override
     public String uploadMultipartFile(Member member, MultipartFile file) {
         InputStream image = null;
-
-        try(InputStream is = file.getInputStream()){
-            image = is;
-        } catch (IOException e) {
-            log.error("error while reading uploaded file", e);
-        }
+        String dir = LOCAL_FILE_DIR + "/" + member.getLoginId() + "/" + file.getOriginalFilename();
 
         try {
-            byte[] imagebytes = new byte[image.available()];
-            image.read(imagebytes);
-
-            File targetFile = new File(LOCAL_FILE_DIR + "/" + member.getLoginId() + "/" + file.getOriginalFilename());
-            OutputStream writeFile = new FileOutputStream(targetFile);
-
-            writeFile.write(imagebytes);
+            file.transferTo(new File(dir));
         } catch (IOException e) {
-            log.error("error while writing image", e);
+            log.error("error while writing file to local filesystem.", e);
         }
 
-        return LOCAL_HOST_NAME + "/" + member.getLoginId() + "/" + file.getOriginalFilename();
+        return dir;
     }
 }

@@ -1,5 +1,7 @@
 package net.fittable.domain.business;
 
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.StudioOwnerMember;
@@ -19,6 +21,8 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "STUDIO")
 @Data
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Builder
 public class Studio {
 
     @Id
@@ -69,7 +73,12 @@ public class Studio {
     @Column(name = "STUDIO_DIRECTIONS")
     private String directions;
 
-    @Builder
+    @Column(name = "STUDIO_INTRODUCTION")
+    private String studioIntroduction;
+
+    @Column(name = "STUDIO_NOTICE")
+    private String notice;
+
     public Studio(String name, StudioOwnerMember owner, Town town) {
         this.name = name;
         this.owner = owner;
