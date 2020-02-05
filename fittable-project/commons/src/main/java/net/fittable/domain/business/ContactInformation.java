@@ -1,5 +1,6 @@
 package net.fittable.domain.business;
 
+import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.business.enums.ContactInformationType;
 
@@ -25,6 +26,12 @@ public class ContactInformation {
 
     @Column(name = "REPRESENTATIVE_CONTACT")
     private String representativeContact;
+
+    @Builder
+    public ContactInformation(ContactInformationType informationType, String contactInformationValue) {
+        this.informationType = informationType;
+        this.contactInformationValue = contactInformationValue;
+    }
 
     public void addPhoneNumber(String phoneNumber) {
         if(this.contactInformationValue == null || this.contactInformationValue.isEmpty()) {

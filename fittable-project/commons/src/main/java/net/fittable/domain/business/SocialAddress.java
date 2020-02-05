@@ -2,16 +2,28 @@ package net.fittable.domain.business;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import net.fittable.persistence.validators.annotation.HttpUrl;
 
+import javax.validation.constraints.NotEmpty;
 import java.util.StringJoiner;
 
 @Data
 @AllArgsConstructor
 public class SocialAddress {
 
+    @NotEmpty
     private String kakaoId;
+
+    @NotEmpty
+    @HttpUrl
     private String instagramAddress;
+
+    @NotEmpty
+    @HttpUrl
     private String homepage;
+
+    @NotEmpty
+    @HttpUrl
     private String facebookAddress;
 
     public String concatAddresses() {

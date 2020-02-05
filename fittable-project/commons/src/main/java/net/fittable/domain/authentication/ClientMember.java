@@ -1,19 +1,26 @@
 package net.fittable.domain.authentication;
 
 import lombok.Builder;
+import lombok.Data;
 import net.fittable.domain.authentication.enums.MemberAuthority;
+import net.fittable.domain.authentication.enums.SocialProvider;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "MEMBER")
+@Data
 public class ClientMember implements Member {
 
     @Id
     @GeneratedValue
     @Column(name = "MEMBER_SEQUENCE")
     private long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "CLIENT_SOCIAL_PROVIDER")
+    private SocialProvider socialProvider;
 
     @Column(name = "MEMBER_ID")
     private String loginId;
@@ -29,6 +36,9 @@ public class ClientMember implements Member {
 
     @Column(name = "MEMBER_EMAIL")
     private String emailAddress;
+
+    @Column(name = "MEMBER_IS_IN_PENALTY")
+    private boolean inPenalty;
 
     @Builder
     public ClientMember(String loginId, String encryptedPassword, LocalDateTime birthday, String phoneNumber, String emailAddress) {
@@ -67,5 +77,9 @@ public class ClientMember implements Member {
     @Override
     public boolean isMatchingPassword(String encryptedPassword) {
         return encryptedPassword.equals(this.encryptedPassword);
+    }
+
+    public void setAsPenaltyState() {
+        this.inPenalty = true;
     }
 }
