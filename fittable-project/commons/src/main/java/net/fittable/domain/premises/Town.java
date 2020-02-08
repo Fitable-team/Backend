@@ -1,5 +1,6 @@
 package net.fittable.domain.premises;
 
+import lombok.Data;
 import net.fittable.domain.business.Studio;
 
 import javax.persistence.*;
@@ -7,14 +8,15 @@ import java.util.List;
 
 @Entity
 @Table(name = "TOWN")
+@Data
 public class Town {
 
     @Id
     @GeneratedValue
     private long id;
 
-    private String province;
-    private String city;
+    private String superDistrict;
+    private String lowerDistrict;
     private String name;
 
     @Embedded

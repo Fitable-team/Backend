@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.business.reservation.Session;
+import net.fittable.domain.premises.Coordinate;
 import net.fittable.domain.premises.Town;
 import net.fittable.persistence.converters.SocialAddressConverter;
 import net.fittable.persistence.converters.StudioImageListConverter;
@@ -39,11 +40,8 @@ public class Studio {
     @Size(min = 1, max = 500)
     private String detailedAddress;
 
-    @Column(name = "STUDIO_LATITUDE")
-    private Double latitude;
-
-    @Column(name = "STUDIO_LONGITUDE")
-    private Double longitude;
+    @Embedded
+    private Coordinate coordinate;
 
     @ManyToOne
     @JoinColumn(name = "STUDIO_OWNER_ID")
