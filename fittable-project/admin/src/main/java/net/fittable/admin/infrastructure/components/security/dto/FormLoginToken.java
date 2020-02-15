@@ -28,6 +28,7 @@ public class FormLoginToken extends AbstractAuthenticationToken {
         this.userId = userId;
         this.password = password;
         this.principal = processedPrincipal;
+        super.setAuthenticated(true);
     }
 
     @Override

@@ -41,6 +41,12 @@ public class StudioManagementService {
 
     private SMSNotifyService notifyService;
 
+    public Studio getSingleStudio(String id) {
+        Long studioId = Long.parseLong(id);
+
+        return studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
+    }
+
     @Transactional
     public void addNewStudio(Studio studio, ContactInformation contactInformation) {
         studio.setOwner(memberManagementService.generateNewMember(contactInformation));
