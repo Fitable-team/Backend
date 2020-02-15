@@ -22,7 +22,14 @@ public class Lesson {
     @Column(name = "LESSON_DESCRIPTION")
     private String description;
 
-    @OneToMany
+    @Column(name = "LESSON_INSTRUCTOR")
+    private String instructorName;
+
+    @ManyToOne
+    @JoinColumn(name = "LESSON_OWNER_STUDIOID")
+    private Studio studio;
+
+    @OneToMany(mappedBy = "lesson")
     private Set<Session> sessions;
 
     public boolean isAvailable() {

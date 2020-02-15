@@ -1,7 +1,9 @@
 package net.fittable.domain.business.reservation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
+import net.fittable.domain.business.Lesson;
 import net.fittable.domain.business.Studio;
 import org.hibernate.annotations.Cascade;
 
@@ -28,6 +30,7 @@ public class Session {
 
     @ManyToOne
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
+    @JsonIgnore
     private Studio targetStudio;
 
     @Column(name = "SESSION_INSTRUCTOR")
@@ -52,6 +55,11 @@ public class Session {
     @Column(name = "SESSION_REGULAR_DAY")
     @Embedded
     private RegularSession regularSession;
+
+    @ManyToOne
+    @JoinColumn(name = "SESSION_LESSON_ID")
+    @JsonIgnore
+    private Lesson lesson;
 
     private int capacity = 1;
 

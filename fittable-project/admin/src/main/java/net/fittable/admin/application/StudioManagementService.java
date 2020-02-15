@@ -6,6 +6,7 @@ import net.fittable.admin.infrastructure.repositories.ReservationRepository;
 import net.fittable.admin.infrastructure.repositories.SessionRepository;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.view.dto.TimetableManageDto;
+import net.fittable.admin.view.dto.client.response.studio.StudioDto;
 import net.fittable.domain.authentication.ClientMember;
 import net.fittable.domain.authentication.Member;
 import net.fittable.domain.authentication.StudioOwnerMember;
@@ -41,10 +42,12 @@ public class StudioManagementService {
 
     private SMSNotifyService notifyService;
 
-    public Studio getSingleStudio(String id) {
+    @Transactional
+    public StudioDto getSingleStudio(String id) {
         Long studioId = Long.parseLong(id);
 
-        return studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
+        Studio studio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
+        return StudioDto.fromStudio(studio);
     }
 
     @Transactional

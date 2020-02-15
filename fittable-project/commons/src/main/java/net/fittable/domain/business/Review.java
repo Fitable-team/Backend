@@ -1,5 +1,6 @@
 package net.fittable.domain.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import net.fittable.domain.authentication.Member;
 import net.fittable.domain.authentication.enums.MemberAuthority;
@@ -29,6 +30,7 @@ public class Review implements BatchDeletable {
 
     @ManyToOne
     @JoinColumn(name = "STORE_ID")
+    @JsonIgnore
     private Studio targetStudio;
 
     public boolean isEligibleForWritingReply(Member member) {

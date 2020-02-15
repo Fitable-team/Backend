@@ -1,4 +1,4 @@
-package net.fittable.admin.view.dto.client;
+package net.fittable.admin.view.dto.client.request;
 
 import lombok.Data;
 
