@@ -5,20 +5,23 @@ import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.infrastructure.repositories.TownRepository;
+import net.fittable.domain.business.SocialAddress;
 import net.fittable.domain.business.Studio;
+import net.fittable.domain.business.StudioFilter;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
 import net.fittable.domain.premises.Town;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-@Component
+//@Component
 @Slf4j
 public class CSVDatabaseInitializer {
 
@@ -75,9 +78,29 @@ public class CSVDatabaseInitializer {
                     case 8:
                         studio.setStudioIntroduction(c[i]);
                     case 9:
+                        String[] attributes = c[i].split(",");
+                        List<StudioFilter> filters = new ArrayList<>();
+                        for(String a: attributes) {
+                            StudioFilter f = new StudioFilter();
+                            f.setAttribute(a);
 
+                            filters.add(f);
+                        }
+                        studio.setStudioAttributes(filters);
+                    case 10:
+                        SocialAddress socialAddress = new SocialAddress();
+                        if(c[i].contains("instagram")) {
+                            socialAddress.setInstagramAddress(c[i]);
+                        }
+                        if(StringUtils.isEmpty(c[i + 1])) {
+                            break;
+                        }
+                        socialAddress.setHomepage(c[i]);
+                        socialAddress.setBlogAddress(c[i + 1]);
+                        break;
 
-
+                    default:
+                        break;
                 }
             }
         }

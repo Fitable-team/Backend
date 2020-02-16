@@ -2,17 +2,19 @@ package net.fittable.domain.premises;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import java.util.Objects;
 
 @Embeddable
 @Data
+@NoArgsConstructor
 @Builder
 public class Coordinate {
 
-    private final double latitude;
-    private final double longitude;
+    private double latitude;
+    private double longitude;
 
     public Coordinate(double latitude, double longitude) {
         this.latitude = latitude;

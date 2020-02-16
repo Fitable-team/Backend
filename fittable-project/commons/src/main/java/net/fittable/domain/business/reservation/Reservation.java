@@ -1,9 +1,6 @@
 package net.fittable.domain.business.reservation;
 
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Data;
-import lombok.Setter;
+import lombok.*;
 import net.fittable.domain.authentication.ClientMember;
 import net.fittable.domain.business.BatchDeletable;
 import net.fittable.domain.business.Review;
@@ -16,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "RESERVATION")
 @Data
+@NoArgsConstructor
 public class Reservation implements BatchDeletable {
 
     @Id

@@ -19,7 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-@RestController("/api/admin")
+//@RestController("/api/admin")
 public class AdminApi {
 
     @Autowired

@@ -2,6 +2,7 @@ package net.fittable.domain.authentication;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.fittable.domain.authentication.enums.MemberAuthority;
 import net.fittable.domain.business.BusinessOwner;
 
@@ -13,6 +14,7 @@ import java.util.Objects;
 @Entity
 @Table(name = "SERVICE_ADMIN")
 @Data
+@NoArgsConstructor
 public class AdminMember implements Member {
 
     @Id

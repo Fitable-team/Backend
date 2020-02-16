@@ -1,0 +1,24 @@
+package net.fittable.domain.business;
+
+import lombok.Data;
+import lombok.Generated;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.List;
+
+@Entity
+@Table(name = "STUDIO_FILTER")
+@Data
+@NoArgsConstructor
+public class StudioFilter {
+
+    @Id
+    @GeneratedValue
+    private long id;
+
+    private String attribute;
+
+    @ManyToMany
+    private List<Studio> studiosWithAttribute;
+}

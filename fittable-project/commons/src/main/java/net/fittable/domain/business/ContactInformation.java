@@ -2,6 +2,7 @@ package net.fittable.domain.business;
 
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.fittable.domain.business.enums.ContactInformationType;
 
 import javax.persistence.Column;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @Embeddable
 @Data
+@NoArgsConstructor
 public class ContactInformation {
     private static final String CONTACT_INFORMATION_DELIMITER = ";";
 

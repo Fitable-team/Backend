@@ -3,6 +3,7 @@ package net.fittable.domain.business.reservation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.fittable.domain.business.Lesson;
 import net.fittable.domain.business.Studio;
 import org.hibernate.annotations.Cascade;
@@ -16,6 +17,7 @@ import java.util.stream.Collectors;
 @Entity
 @Table(name = "SESSION")
 @Data
+@NoArgsConstructor
 public class Session {
 
     @Id

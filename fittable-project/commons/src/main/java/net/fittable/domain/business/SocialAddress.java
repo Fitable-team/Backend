@@ -2,6 +2,7 @@ package net.fittable.domain.business;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.fittable.persistence.validators.annotation.HttpUrl;
 
 import javax.validation.constraints.NotEmpty;
@@ -9,12 +10,14 @@ import java.util.StringJoiner;
 
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class SocialAddress {
 
-    @NotEmpty
     private String kakaoId;
 
-    @NotEmpty
+    @HttpUrl
+    private String blogAddress;
+
     @HttpUrl
     private String instagramAddress;
 
@@ -22,7 +25,6 @@ public class SocialAddress {
     @HttpUrl
     private String homepage;
 
-    @NotEmpty
     @HttpUrl
     private String facebookAddress;
 
@@ -30,6 +32,7 @@ public class SocialAddress {
         StringJoiner addresses = new StringJoiner(";");
 
         addresses.add(this.kakaoId);
+        addresses.add(this.blogAddress);
         addresses.add(this.instagramAddress);
         addresses.add(this.homepage);
         addresses.add(this.facebookAddress);
@@ -40,7 +43,7 @@ public class SocialAddress {
     public static SocialAddress fromConcatenatedString(String concat) {
         String[] splittedString = concat.split(";");
 
-        return new SocialAddress(splittedString[0], splittedString[1], splittedString[2], splittedString[3]);
+        return new SocialAddress(splittedString[0], splittedString[1], splittedString[2], splittedString[3], splittedString[4]);
     }
 
 

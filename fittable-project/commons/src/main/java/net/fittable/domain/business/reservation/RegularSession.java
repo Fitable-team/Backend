@@ -1,6 +1,7 @@
 package net.fittable.domain.business.reservation;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Embeddable;
 import java.util.Arrays;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 @Embeddable
 @Data
+@NoArgsConstructor
 public class RegularSession {
     private static final String DAY_DELIMITER = ";";
 

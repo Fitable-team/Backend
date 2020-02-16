@@ -50,7 +50,7 @@ public class Studio {
     @OneToMany(mappedBy = "targetStudio", fetch = FetchType.LAZY)
     private Set<Session> sessions = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "STORE_TOWN_ID")
     private Town town;
 
@@ -64,6 +64,9 @@ public class Studio {
     @Column(name = "STUDIO_IMAGE_LIST")
     @Convert(converter = StudioImageListConverter.class)
     private StudioImageList imageList;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<StudioFilter> studioAttributes;
 
     @Column(name = "STUDIO_INTRO_MOVIE")
     private String introductionMovie;

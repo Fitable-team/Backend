@@ -1,6 +1,7 @@
 package net.fittable.domain.business;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import net.fittable.domain.authentication.AdminMember;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.persistence.*;
 @Entity
 @Table(name = "BUSINESS_OWNER")
 @Data
+@NoArgsConstructor
 public class BusinessOwner {
 
     @Id
