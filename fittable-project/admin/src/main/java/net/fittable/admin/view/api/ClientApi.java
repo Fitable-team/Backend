@@ -3,8 +3,9 @@ package net.fittable.admin.view.api;
 import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.application.StudioSearchService;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
+import net.fittable.admin.view.dto.client.request.MainpageRequestDto;
+import net.fittable.admin.view.dto.client.response.mainpage.MainpageDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
-import net.fittable.domain.business.Studio;
 import net.fittable.domain.premises.Town;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -38,5 +39,10 @@ public class ClientApi {
         }
 
         return studioSearchService.findByTownName(dto.getTownName());
+    }
+
+    @PostMapping(path = "/mainpage")
+    public MainpageDto getMainPage(@RequestBody MainpageRequestDto requestDto) {
+        return studioSearchService.generateMainPage(requestDto);
     }
 }

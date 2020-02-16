@@ -1,9 +1,6 @@
 package net.fittable.domain.business;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
@@ -23,6 +20,7 @@ import java.util.stream.Collectors;
 @Table(name = "STUDIO")
 @Data
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@NoArgsConstructor
 @Builder
 public class Studio {
 
@@ -42,6 +40,8 @@ public class Studio {
 
     @Embedded
     private Coordinate coordinate;
+
+    private String representativeContact;
 
     @ManyToOne
     @JoinColumn(name = "STUDIO_OWNER_ID")
