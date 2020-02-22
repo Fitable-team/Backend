@@ -22,10 +22,12 @@ public class Review implements BatchDeletable {
 
     private String ownersReply;
 
+    @JsonIgnore
     private boolean deleted;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "RESERVATION_ID")
+    @JsonIgnore
     private Reservation originatedReservation;
 
     @ManyToOne
