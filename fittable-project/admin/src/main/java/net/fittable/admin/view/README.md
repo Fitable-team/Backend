@@ -13,8 +13,8 @@
 {"result" : "ok", "statusCode" : 200, "token" : (JWT Token)} 
 ```
 
-#### 메인화면 리스트 조회 API(위치기반)
-`POST /api/v1/mainpage`
+#### 위치기반 리스트 조회 API
+`POST /api/v1/location`
 
 - request body 
 ```json
@@ -23,7 +23,8 @@
   "since" : "2020-01-01 15:00:00",
   "until" : "2020-01-02 12:00:00",
   "latitude" : "37.24314134134",
-  "longitude" : "127.13413412312"
+  "longitude" : "127.13413412312",
+  "townName" : (Optional)"정자동"
 }
 ```
 
