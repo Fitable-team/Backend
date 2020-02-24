@@ -40,9 +40,4 @@ public class ClientApi {
 
         return studioSearchService.findByTownName(dto.getTownName());
     }
-
-    @PostMapping(path = "/mainpage")
-    public MainpageDto getMainPage(@RequestBody MainpageRequestDto requestDto) {
-        return studioSearchService.generateMainPage(requestDto);
-    }
 }
