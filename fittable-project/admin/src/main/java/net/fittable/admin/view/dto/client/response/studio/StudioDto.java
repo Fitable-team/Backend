@@ -3,6 +3,7 @@ package net.fittable.admin.view.dto.client.response.studio;
 import lombok.Data;
 import net.fittable.domain.business.Review;
 import net.fittable.domain.business.Studio;
+import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
 
@@ -22,7 +23,11 @@ public class StudioDto {
 
         studioDto.setStudioId(String.valueOf(studio.getId()));
         studioDto.setName(studio.getName());
-        studioDto.setRatings(studio.getReviews().stream().mapToDouble(Review::getStarPoint).average().getAsDouble());
+
+        if(CollectionUtils.isNotEmpty(studio.getReviews())) {
+            studioDto.setRatings(studio.getReviews().stream().mapToDouble(Review::getStarPoint).average().getAsDouble());
+        }
+
         studioDto.setTown(studio.getTown().getSuperDistrict() + " " + studio.getTown().getLowerDistrict());
         studioDto.setIntroduction(IntroductionDto.fromStudio(studio));
 
