@@ -3,6 +3,7 @@ package net.fittable.domain.business;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
+import net.fittable.domain.business.enums.Amenity;
 
 import javax.persistence.*;
 import java.util.List;
@@ -17,7 +18,8 @@ public class StudioFilter {
     @GeneratedValue
     private long id;
 
-    private String attribute;
+    @Enumerated(EnumType.STRING)
+    private Amenity attribute;
 
     @ManyToMany
     private List<Studio> studiosWithAttribute;

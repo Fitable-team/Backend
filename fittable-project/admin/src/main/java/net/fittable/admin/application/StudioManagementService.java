@@ -12,50 +12,62 @@ import net.fittable.domain.authentication.enums.MemberAuthority;
 import net.fittable.domain.business.ContactInformation;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.reservation.Session;
+import net.fittable.domain.search.SearchableStudio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
 
-            @Service
-            public class StudioManagementService {
+@Service
+public class StudioManagementService {
 
-                @Autowired
-                private MemberManagementService memberManagementService;
+    @Autowired
+    private MemberManagementService memberManagementService;
 
-                @Autowired
-                private StudioRepository studioRepository;
+    @Autowired
+    private StudioRepository studioRepository;
 
-                @Autowired
-                private ReservationRepository reservationRepository;
+    @Autowired
+    private ReservationRepository reservationRepository;
 
-                @Autowired
-                private SessionRepository sessionRepository;
+    @Autowired
+    private SessionRepository sessionRepository;
 
-                private SMSNotifyService notifyService;
+    private SMSNotifyService notifyService;
 
-                @Transactional
-                public StudioDto getSingleStudio(String id) {
-                    Long studioId = Long.parseLong(id);
+    @Transactional
+    public StudioDto getSingleStudio(String id) {
+        Long studioId = Long.parseLong(id);
 
-                    Studio studio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
-                    return StudioDto.fromStudio(studio);
-                }
+        Studio studio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
+        return StudioDto.fromStudio(studio);
+    }
 
-                @Transactional
-                public void addNewStudio(Studio studio, ContactInformation contactInformation) {
-                    studio.setOwner(memberManagementService.generateNewMember(contactInformation));
+    @Transactional
+    public void addNewStudio(Studio studio, ContactInformation contactInformation) {
+        studio.setOwner(memberManagementService.generateNewMember(contactInformation));
 
-                    studioRepository.save(studio);
-                }
+        studioRepository.save(studio);
+    }
 
-                @Transactional
-                public void editTimetable(TimetableManageDto dto) {
-                    if(dto.isCreatingNewTimeSession()) {
-                        Session createdSession = dto.toSession();
-                        createdSession.setTargetStudio(studioRepository
+    @Transactional(readOnly = true)
+    public SearchableStudio generateIndexableStudio(Long id) {
+        return SearchableStudio.fromStudio(studioRepository.findById(id).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음.")));
+    }
+
+    @Transactional(readOnly = true)
+    public List<SearchableStudio> generateFullIndexList() {
+        return studioRepository.findAll().stream().map(SearchableStudio::fromStudio).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public void editTimetable(TimetableManageDto dto) {
+        if(dto.isCreatingNewTimeSession()) {
+            Session createdSession = dto.toSession();
+            createdSession.setTargetStudio(studioRepository
                     .findById(Long.parseLong(dto.getStudioId()))
                     .orElseThrow(() -> new NoSuchElementException("ID에 맞는 스튜디오가 없습니다."))
             );
@@ -65,7 +77,6 @@ import java.util.NoSuchElementException;
         }
         Session existingSession = sessionRepository
                 .findById(Long.parseLong(dto.getClassId())).orElseThrow(() -> new NoSuchElementException("ID에 맞는 클래스가 없습니다."));
-
 
     }
 

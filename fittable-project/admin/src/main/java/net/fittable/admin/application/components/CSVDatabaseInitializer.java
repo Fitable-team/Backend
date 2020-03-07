@@ -8,6 +8,7 @@ import net.fittable.admin.infrastructure.repositories.TownRepository;
 import net.fittable.domain.business.SocialAddress;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.StudioFilter;
+import net.fittable.domain.business.enums.Amenity;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
 import net.fittable.domain.premises.Town;
@@ -19,7 +20,9 @@ import org.springframework.util.StringUtils;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 //@Component
 @Slf4j
@@ -82,7 +85,10 @@ public class CSVDatabaseInitializer {
                         List<StudioFilter> filters = new ArrayList<>();
                         for(String a: attributes) {
                             StudioFilter f = new StudioFilter();
-                            f.setAttribute(a);
+                            List<Amenity> amenities = Arrays.asList(Amenity.values());
+
+                            f.setAttribute(amenities.stream().filter(am -> am.name().equals(a))
+                                    .findFirst().orElseThrow(() -> new NoSuchElementException("등록된 편의시설이 아님")));
 
                             filters.add(f);
                         }

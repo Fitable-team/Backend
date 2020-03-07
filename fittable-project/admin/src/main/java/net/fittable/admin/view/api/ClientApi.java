@@ -22,7 +22,7 @@ public class ClientApi {
     @Autowired
     private StudioSearchService studioSearchService;
 
-    @GetMapping(path = "/{studioId}")
+    @GetMapping(path = "/studios/{studioId}")
     public StudioDto getStudioById(@PathVariable String studioId) {
         return studioManagementService.getSingleStudio(studioId);
     }
