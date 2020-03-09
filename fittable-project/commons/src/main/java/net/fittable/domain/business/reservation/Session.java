@@ -28,11 +28,11 @@ public class Session {
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinColumn(name = "RESERVATION_CLIENT_ID")
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
+    @JsonIgnore
     private List<Reservation> reservations;
 
     @ManyToOne
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
-    @JsonIgnore
     private Studio targetStudio;
 
     @Column(name = "SESSION_INSTRUCTOR")

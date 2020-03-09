@@ -1,5 +1,6 @@
 package net.fittable.domain.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.business.reservation.Session;
@@ -45,9 +46,11 @@ public class Studio {
 
     @ManyToOne
     @JoinColumn(name = "STUDIO_OWNER_ID")
+    @JsonIgnore
     private StudioOwnerMember owner;
 
     @OneToMany(mappedBy = "targetStudio", fetch = FetchType.LAZY)
+    @JsonIgnore
     private Set<Session> sessions = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
@@ -55,29 +58,37 @@ public class Studio {
     private Town town;
 
     @OneToMany(mappedBy = "targetStudio")
+    @JsonIgnore
     private List<Review> reviews;
 
     @Column(name = "STUDIO_SOCIAL_CONTACT")
     @Convert(converter = SocialAddressConverter.class)
+    @JsonIgnore
     private SocialAddress socialAddress;
 
     @Column(name = "STUDIO_IMAGE_LIST")
     @Convert(converter = StudioImageListConverter.class)
+    @JsonIgnore
     private StudioImageList imageList;
 
     @ManyToMany(cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<StudioFilter> studioAttributes;
 
     @Column(name = "STUDIO_INTRO_MOVIE")
+    @JsonIgnore
     private String introductionMovie;
 
     @Column(name = "STUDIO_DIRECTIONS")
+    @JsonIgnore
     private String directions;
 
     @Column(name = "STUDIO_INTRODUCTION")
+    @JsonIgnore
     private String studioIntroduction;
 
     @Column(name = "STUDIO_NOTICE")
+    @JsonIgnore
     private String notice;
 
     public Studio(String name, StudioOwnerMember owner, Town town) {

@@ -31,9 +31,7 @@
 - response body
 ```json
 {
-  "townName" : "정자동",
-  "selectedDate" : "2020-01-01 15:00:00",
-  "lessons" : [<Lessons>]
+  Array<Studios> 
 }
 ```
 
