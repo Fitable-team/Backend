@@ -1,11 +1,9 @@
 package net.fittable.domain.search;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import net.fittable.domain.business.Studio;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 @Data
@@ -27,5 +25,9 @@ public class SearchableStudio {
                 .latitude(studio.getCoordinate().getLatitude())
                 .longitude(studio.getCoordinate().getLongitude())
                 .build();
+    }
+
+    public static SearchableStudio emptyObject() {
+        return new SearchableStudio();
     }
 }
