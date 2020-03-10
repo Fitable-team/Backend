@@ -1,6 +1,8 @@
 package net.fittable.admin;
 
 import net.fittable.admin.application.StudioManagementService;
+import net.fittable.admin.application.components.CSVDatabaseInitializer;
+import net.fittable.admin.view.dto.TimetableManageDto;
 import net.fittable.domain.business.ContactInformation;
 import net.fittable.domain.business.SocialAddress;
 import net.fittable.domain.business.Studio;
@@ -22,7 +24,7 @@ public class AdminApplication {
     }
 
     @Bean
-    public CommandLineRunner storeTestData(StudioManagementService managementService) {
+    public CommandLineRunner storeTestData(StudioManagementService managementService, CSVDatabaseInitializer initializer) {
         return args -> {
             Studio studio = new Studio();
 
@@ -41,6 +43,8 @@ public class AdminApplication {
 
             managementService.addNewStudio(studio,
                     ContactInformation.builder().contactInformationValue("031-715-3558").informationType(ContactInformationType.PHONE).build());
+
+            initializer.setStudioDatabase();
         };
     }
 

@@ -23,4 +23,13 @@ public class StudioFilter {
 
     @ManyToMany
     private List<Studio> studiosWithAttribute;
+
+    public static StudioFilter generateEntity(String attribute) {
+        Amenity amenity = Amenity.fromDataString(attribute);
+
+        StudioFilter studioFilter = new StudioFilter();
+        studioFilter.setAttribute(amenity);
+
+        return studioFilter;
+    }
 }

@@ -4,6 +4,7 @@ import com.opencsv.CSVReader;
 import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import net.fittable.admin.application.StudioManagementService;
+import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.infrastructure.repositories.TownRepository;
 import net.fittable.domain.business.SocialAddress;
 import net.fittable.domain.business.Studio;
@@ -17,100 +18,96 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.io.FileReader;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.NoSuchElementException;
+import java.io.*;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
-//@Component
+@Component
 @Slf4j
 public class CSVDatabaseInitializer {
+    private static final String DATA_DELIMITER = "\t";
 
     private final StudioManagementService studioManagementService;
-    private final String fileDirectory;
+    private final String studioFileDir;
+    private final String timetableFileDir;
 
     @Autowired
     private TownRepository townRepository;
 
-    public CSVDatabaseInitializer(StudioManagementService studioManagementService, @Value("${initial.filedir}") String fileDirectory) {
+    @Autowired
+    private StudioRepository studioRepository;
+
+    public CSVDatabaseInitializer(StudioManagementService studioManagementService,
+                                  @Value("${initial.filedir.studio}") String studioFileDir,
+                                  @Value("${initial.filedir.timetable}") String timetableFileDir) {
         this.studioManagementService = studioManagementService;
-        this.fileDirectory = fileDirectory;
+        this.studioFileDir = studioFileDir;
+        this.timetableFileDir = timetableFileDir;
     }
 
     public void setStudioDatabase() {
-        List<String[]> parsedRows = null;
+        List<String[]> lines = readLineFromTsv(this.studioFileDir);
 
-        try(FileReader reader = new FileReader(this.fileDirectory)) {
-            CSVReader csvReader = new CSVReader(reader);
-            parsedRows = csvReader.readAll();
-        } catch (CsvException | IOException e) {
-            log.error("error while parsing CSV", e);
-            return;
-        }
+        for(String[] line: lines) {
+            Studio studio = null;
+            List<String> fields = Arrays.asList(line);
+            System.out.println(fields);
 
-        for(String[] c: parsedRows) {
-            Studio studio = new Studio();
-            for(int i = 0; i < c.length; i++) {
-                switch(i) {
-                    case 0:
-                        studio.setName(c[i]);
-                        break;
-                    case 1:
-                        break;
-                    case 2:
-                        break;
-                    case 3:
-                        Town town = townRepository.findByName(c[i].split(" ")[2])
-                                .orElse(Town.builder()
-                                        .name(c[i + 1].split(" ")[0])
-                                        .superDistrict(c[i])
-                                        .lowerDistrict(c[i + 1].split(" ")[0])
-                                        .build());
-
-                        studio.setTown(town);
-                    case 4:
-                        studio.setDetailedAddress(c[i - 1] + c[i]);
-                    case 5:
-                        studio.setCoordinate(new Coordinate(Double.parseDouble(c[i]), Double.parseDouble(c[i + 1])));
-                    case 6:
-                        break;
-                    case 7:
-                        studio.setRepresentativeContact(c[i]);
-                    case 8:
-                        studio.setStudioIntroduction(c[i]);
-                    case 9:
-                        String[] attributes = c[i].split(",");
-                        List<StudioFilter> filters = new ArrayList<>();
-                        for(String a: attributes) {
-                            StudioFilter f = new StudioFilter();
-                            List<Amenity> amenities = Arrays.asList(Amenity.values());
-
-                            f.setAttribute(amenities.stream().filter(am -> am.name().equals(a))
-                                    .findFirst().orElseThrow(() -> new NoSuchElementException("등록된 편의시설이 아님")));
-
-                            filters.add(f);
-                        }
-                        studio.setStudioAttributes(filters);
-                    case 10:
-                        SocialAddress socialAddress = new SocialAddress();
-                        if(c[i].contains("instagram")) {
-                            socialAddress.setInstagramAddress(c[i]);
-                        }
-                        if(StringUtils.isEmpty(c[i + 1])) {
-                            break;
-                        }
-                        socialAddress.setHomepage(c[i]);
-                        socialAddress.setBlogAddress(c[i + 1]);
-                        break;
-
-                    default:
-                        break;
-                }
+            if(fields.contains("스튜디오ID")) {
+                continue;
             }
+            List<StudioFilter> filters = Arrays.asList(fields.get(10).split(","))
+                    .stream()
+                    .map(StudioFilter::generateEntity).collect(Collectors.toList());
+
+            SocialAddress socialAddress = new SocialAddress();
+
+            socialAddress.setHomepage(fields.get(11));
+
+            if(fields.size() > 12) {
+                socialAddress.setBlogAddress(fields.get(12));
+            }
+
+            studio = Studio.builder()
+                    .studioAttributes(filters)
+                    .id(Long.parseLong(fields.get(0)))
+                    .name(fields.get(1))
+                    .topAddress(fields.get(4))
+                    .detailedAddress(fields.get(5))
+                    .coordinate(Coordinate.builder().latitude(Double.parseDouble(fields.get(6))).longitude(Double.parseDouble(fields.get(7))).build())
+                    .representativeContact(fields.get(8))
+                    .studioIntroduction(fields.get(9))
+                    .socialAddress(socialAddress)
+                    .build();
+
+            studioRepository.save(studio);
         }
-        return;
+    }
+
+    public void setTimetableDatabase() {
+        List<String[]> lines = readLineFromTsv(this.timetableFileDir);
+    }
+
+    private List<String[]> readLineFromTsv(String resourceName) {
+        List<String[]> parsedRows = new ArrayList<>();
+
+        try(InputStreamReader reader = new InputStreamReader(CSVDatabaseInitializer.class.getResourceAsStream(resourceName), "x-windows-949")) {
+            BufferedReader lineReader = new BufferedReader(reader);
+            String line = lineReader.readLine();
+
+            while(!StringUtils.isEmpty(line)) {
+                line = line.replace("\"", "");
+
+                parsedRows.add(line.split(DATA_DELIMITER));
+                line = lineReader.readLine();
+            }
+
+        } catch (IOException e) {
+            log.error("error while parsing CSV", e);
+            return Collections.emptyList();
+        }
+        return parsedRows;
     }
 
     private List<Session> parseTimetableInformation() {

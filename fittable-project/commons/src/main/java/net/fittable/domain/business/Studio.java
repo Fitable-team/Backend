@@ -39,6 +39,8 @@ public class Studio {
     @Size(min = 1, max = 500)
     private String detailedAddress;
 
+    private String topAddress;
+
     @Embedded
     private Coordinate coordinate;
 
