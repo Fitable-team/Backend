@@ -3,7 +3,7 @@ package net.fittable.api.application;
 import net.fittable.api.application.repositories.StudioRepository;
 import net.fittable.api.application.repositories.TownRepository;
 import net.fittable.domain.business.Studio;
-import net.fittable.domain.premises.Town;
+import net.fittable.domain.premises.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,8 +26,8 @@ public class StudioService {
 
     @Transactional
     public List<Studio> findByLocaion(String town) {
-        Town targetTown = townRepository.findByName(town).orElseThrow(() -> new NoSuchElementException("해당 지명이 등록되지 않았음"));
+        Location targetLocation = townRepository.findByName(town).orElseThrow(() -> new NoSuchElementException("해당 지명이 등록되지 않았음"));
 
-        return studioRepository.findByTown(targetTown);
+        return studioRepository.findByTown(targetLocation);
     }
 }

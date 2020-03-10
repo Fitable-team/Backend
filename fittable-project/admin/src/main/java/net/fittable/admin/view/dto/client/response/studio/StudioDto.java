@@ -14,6 +14,7 @@ public class StudioDto {
     private String name;
     private double ratings;
     private String town;
+    private String areaName;
     private IntroductionDto introduction;
     private List<Review> reviews;
     private int reviewCount;
@@ -23,15 +24,16 @@ public class StudioDto {
 
         studioDto.setStudioId(String.valueOf(studio.getId()));
         studioDto.setName(studio.getName());
+        studioDto.setAreaName(studio.getLocation().getName());
 
         if(CollectionUtils.isNotEmpty(studio.getReviews())) {
             studioDto.setRatings(studio.getReviews().stream().mapToDouble(Review::getStarPoint).average().getAsDouble());
         }
 
-        if(studio.getTown() != null) {
-            studioDto.setTown(studio.getTown().getSuperDistrict() + " " + studio.getTown().getLowerDistrict());
+        if(studio.getLocation() != null) {
+            studioDto.setTown(studio.getLocation().getSuperDistrict() + " " + studio.getLocation().getLowerDistrict());
         }
-        
+
         studioDto.setIntroduction(IntroductionDto.fromStudio(studio));
 
         studioDto.setReviews(studio.getReviews());

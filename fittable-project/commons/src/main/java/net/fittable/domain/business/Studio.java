@@ -5,7 +5,7 @@ import lombok.*;
 import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
-import net.fittable.domain.premises.Town;
+import net.fittable.domain.premises.Location;
 import net.fittable.persistence.converters.SocialAddressConverter;
 import net.fittable.persistence.converters.StudioImageListConverter;
 
@@ -57,7 +57,7 @@ public class Studio {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "STORE_TOWN_ID")
-    private Town town;
+    private Location location;
 
     @OneToMany(mappedBy = "targetStudio")
     @JsonIgnore
@@ -93,10 +93,10 @@ public class Studio {
     @JsonIgnore
     private String notice;
 
-    public Studio(String name, StudioOwnerMember owner, Town town) {
+    public Studio(String name, StudioOwnerMember owner, Location location) {
         this.name = name;
         this.owner = owner;
-        this.town = town;
+        this.location = location;
     }
 
     public void addSession(Session session) {

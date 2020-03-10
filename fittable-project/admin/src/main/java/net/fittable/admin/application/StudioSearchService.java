@@ -7,10 +7,8 @@ import net.fittable.admin.view.dto.client.request.MainpageRequestDto;
 import net.fittable.admin.view.dto.client.response.lesson.LessonDto;
 import net.fittable.admin.view.dto.client.response.mainpage.MainpageDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
-import net.fittable.domain.business.Lesson;
-import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.reservation.Session;
-import net.fittable.domain.premises.Town;
+import net.fittable.domain.premises.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,15 +30,15 @@ public class StudioSearchService {
     @Autowired
     private SessionRepository sessionRepository;
 
-    public List<Town> getTownList() {
+    public List<Location> getTownList() {
         return townRepository.findAll();
     }
 
     @Transactional
     public List<StudioDto> findByTownName(String townName) {
-        Town targetTown = townRepository.findByName(townName).orElseThrow(() -> new NoSuchElementException("부정확한 동네 이름입니다."));
+        Location targetLocation = townRepository.findByName(townName).orElseThrow(() -> new NoSuchElementException("부정확한 동네 이름입니다."));
 
-        return studioRepository.findByTown(targetTown).stream().map(StudioDto::fromStudio).collect(Collectors.toList());
+        return studioRepository.findByLocation(targetLocation).stream().map(StudioDto::fromStudio).collect(Collectors.toList());
     }
 
     @Transactional

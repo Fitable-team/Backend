@@ -19,9 +19,9 @@ public class SearchableStudio {
     public static SearchableStudio fromStudio(Studio studio) {
         return SearchableStudio.builder()
                 .name(studio.getName())
-                .town(studio.getTown().getName())
-                .superDistrict(studio.getTown().getSuperDistrict())
-                .lowerDistrict(studio.getTown().getLowerDistrict())
+                .town(studio.getLocation().getName())
+                .superDistrict(studio.getLocation().getSuperDistrict())
+                .lowerDistrict(studio.getLocation().getLowerDistrict())
                 .latitude(studio.getCoordinate().getLatitude())
                 .longitude(studio.getCoordinate().getLongitude())
                 .build();

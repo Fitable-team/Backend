@@ -5,12 +5,9 @@ import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.application.StudioSearchService;
 import net.fittable.admin.view.dto.client.request.LessonSearchDto;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
-import net.fittable.admin.view.dto.client.request.MainpageRequestDto;
-import net.fittable.admin.view.dto.client.response.lesson.LessonDto;
-import net.fittable.admin.view.dto.client.response.mainpage.MainpageDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
 import net.fittable.domain.business.reservation.Session;
-import net.fittable.domain.premises.Town;
+import net.fittable.domain.premises.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -36,7 +33,7 @@ public class ClientApi {
     }
 
     @GetMapping(path = "/towns")
-    public List<Town> getTownList() {
+    public List<Location> getTownList() {
         return studioSearchService.getTownList();
     }
 

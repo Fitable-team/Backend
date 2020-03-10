@@ -42,7 +42,7 @@ public class StudioSearchRepository {
         }
 
         if(StringUtils.isNotEmpty(dto.getTownName())) {
-            studioSearchConditions.must(QueryBuilders.matchQuery("town", dto.getTownName()));
+            studioSearchConditions.must(QueryBuilders.matchQuery("location", dto.getTownName()));
         }
 
         source.query(studioSearchConditions);

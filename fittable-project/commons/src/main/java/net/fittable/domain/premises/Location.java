@@ -7,12 +7,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "TOWN")
+@Table(name = "LOCATION")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
-public class Town {
+public class Location {
 
     @Id
     @GeneratedValue
@@ -25,6 +25,6 @@ public class Town {
     @Embedded
     private Coordinate coordinate;
 
-    @OneToMany(mappedBy = "town", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "location", fetch = FetchType.LAZY)
     private List<Studio> storesIncluded;
 }

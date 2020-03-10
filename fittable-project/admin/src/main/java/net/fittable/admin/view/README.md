@@ -70,7 +70,7 @@
   "studioId" : 스튜디오 고유 번호,
   "name" : 스튜디오 명칭,
   "ratings" : 별점(0.5점 단위),
-  "town" : 등록된 지역명(주소 아님),
+  "location" : 등록된 지역명(주소 아님),
   "introduction" : {
     "detailedAddress" : 상세주소,
     "contact" : 대표연락처,

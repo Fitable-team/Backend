@@ -15,7 +15,7 @@ public class IntroductionDto {
     public static IntroductionDto fromStudio(Studio studio) {
         IntroductionDto dto = new IntroductionDto();
 
-        dto.setContact(studio.getOwner().getOwnerContactInformation().getRepresentativeContact());
+        dto.setContact(studio.getRepresentativeContact());
         dto.setDetailedAddress(studio.getDetailedAddress());
         dto.setSocialAddress(studio.getSocialAddress());
         dto.setIntroduction(studio.getStudioIntroduction());

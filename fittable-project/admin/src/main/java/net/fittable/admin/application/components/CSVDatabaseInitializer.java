@@ -1,7 +1,5 @@
 package net.fittable.admin.application.components;
 
-import com.opencsv.CSVReader;
-import com.opencsv.exceptions.CsvException;
 import lombok.extern.slf4j.Slf4j;
 import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
@@ -9,10 +7,9 @@ import net.fittable.admin.infrastructure.repositories.TownRepository;
 import net.fittable.domain.business.SocialAddress;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.StudioFilter;
-import net.fittable.domain.business.enums.Amenity;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
-import net.fittable.domain.premises.Town;
+import net.fittable.domain.premises.Location;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,7 +17,6 @@ import org.springframework.util.StringUtils;
 
 import java.io.*;
 import java.util.*;
-import java.util.function.Function;
 import java.util.stream.Collectors;
 
 @Component
@@ -69,10 +65,18 @@ public class CSVDatabaseInitializer {
                 socialAddress.setBlogAddress(fields.get(12));
             }
 
+            Location location = Location.builder()
+                    .name(fields.get(13))
+                    .superDistrict(fields.get(4))
+                    .lowerDistrict(fields.get(5))
+                    .coordinate(Coordinate.builder().latitude(Double.parseDouble(fields.get(6))).longitude(Double.parseDouble(fields.get(7))).build())
+                    .build();
+
             studio = Studio.builder()
                     .studioAttributes(filters)
                     .id(Long.parseLong(fields.get(0)))
                     .name(fields.get(1))
+                    .location(location)
                     .topAddress(fields.get(4))
                     .detailedAddress(fields.get(5))
                     .coordinate(Coordinate.builder().latitude(Double.parseDouble(fields.get(6))).longitude(Double.parseDouble(fields.get(7))).build())
