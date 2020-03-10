@@ -28,7 +28,10 @@ public class StudioDto {
             studioDto.setRatings(studio.getReviews().stream().mapToDouble(Review::getStarPoint).average().getAsDouble());
         }
 
-        studioDto.setTown(studio.getTown().getSuperDistrict() + " " + studio.getTown().getLowerDistrict());
+        if(studio.getTown() != null) {
+            studioDto.setTown(studio.getTown().getSuperDistrict() + " " + studio.getTown().getLowerDistrict());
+        }
+        
         studioDto.setIntroduction(IntroductionDto.fromStudio(studio));
 
         studioDto.setReviews(studio.getReviews());
