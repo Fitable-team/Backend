@@ -8,6 +8,7 @@ phases:
       - mvn package -pl fittable-project/api -am -DskipTests=true
 artifacts:
   files:
+    - appspec.yml
     - fittable-project/api/target/*.jar
   name: fitable-api
   discard-paths: yes
