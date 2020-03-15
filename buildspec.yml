@@ -2,11 +2,12 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - mvn clean -pl api
+      - mvn clean -pl fittable-project/api
   build:
     commands:
-      - mvn package -pl api -am -DskipTests=true
+      - mvn package -pl fittable-project/api -am -DskipTests=true
 artifacts:
   files:
     - api/target/*.jar
   name: fitable-api
+  discard-paths: yes
