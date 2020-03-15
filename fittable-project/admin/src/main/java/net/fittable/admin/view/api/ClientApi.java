@@ -6,6 +6,7 @@ import net.fittable.admin.application.StudioSearchService;
 import net.fittable.admin.view.dto.client.request.LessonSearchDto;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
+import net.fittable.domain.business.Review;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Location;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,11 @@ public class ClientApi {
     @GetMapping(path = "/studios/{studioId}")
     public StudioDto getStudioById(@PathVariable String studioId) {
         return studioManagementService.getSingleStudio(studioId);
+    }
+
+    @PostMapping(path = "/studios/{studioId}/review")
+    public List<Review> postNewReview(@RequestBody Review review, @PathVariable Long studioId) {
+        return studioManagementService.addNewReviewForStudio(review, studioId).getReviews();
     }
 
     @GetMapping(path = "/towns")

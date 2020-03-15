@@ -12,6 +12,7 @@ import net.fittable.persistence.converters.StudioImageListConverter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -59,7 +60,7 @@ public class Studio {
     @JoinColumn(name = "STORE_TOWN_ID")
     private Location location;
 
-    @OneToMany(mappedBy = "targetStudio")
+    @OneToMany(mappedBy = "targetStudio", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<Review> reviews;
 
@@ -111,5 +112,13 @@ public class Studio {
         return this.sessions.stream()
                 .filter(session -> !session.isFullyBooked())
                 .collect(Collectors.toList());
+    }
+
+    public void addReview(Review review) {
+        if(this.reviews == null) {
+            this.reviews = new ArrayList<>();
+        }
+
+        this.reviews.add(review);
     }
 }

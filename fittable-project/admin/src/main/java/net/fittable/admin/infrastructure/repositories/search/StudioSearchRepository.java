@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
 import net.fittable.domain.search.SearchableStudio;
 import org.apache.commons.lang3.StringUtils;
+import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -74,5 +75,11 @@ public class StudioSearchRepository {
 
                     return studio;
                 }).collect(Collectors.toList());
+    }
+
+    public void saveNewStudio(SearchableStudio studio) {
+        IndexRequest indexRequest = new IndexRequest("studio");
+
+
     }
 }

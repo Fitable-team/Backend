@@ -10,6 +10,7 @@ import net.fittable.domain.authentication.Member;
 import net.fittable.domain.authentication.StudioOwnerMember;
 import net.fittable.domain.authentication.enums.MemberAuthority;
 import net.fittable.domain.business.ContactInformation;
+import net.fittable.domain.business.Review;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.search.SearchableStudio;
@@ -61,6 +62,14 @@ public class StudioManagementService {
     @Transactional(readOnly = true)
     public List<SearchableStudio> generateFullIndexList() {
         return studioRepository.findAll().stream().map(SearchableStudio::fromStudio).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public StudioDto addNewReviewForStudio(Review review, Long studioId) {
+        Studio targetStudio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
+        targetStudio.addReview(review);
+
+        return StudioDto.fromStudio(studioRepository.save(targetStudio));
     }
 
     @Transactional

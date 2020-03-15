@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.infrastructure.repositories.TownRepository;
+import net.fittable.admin.infrastructure.repositories.search.StudioSearchRepository;
 import net.fittable.domain.business.SocialAddress;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.StudioFilter;
@@ -33,6 +34,9 @@ public class CSVDatabaseInitializer {
 
     @Autowired
     private StudioRepository studioRepository;
+
+    @Autowired
+    private StudioSearchRepository studioSearchRepository;
 
     public CSVDatabaseInitializer(StudioManagementService studioManagementService,
                                   @Value("${initial.filedir.studio}") String studioFileDir,
