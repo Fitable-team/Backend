@@ -3,6 +3,7 @@ package net.fittable.admin.view.dto.client.response.studio;
 import lombok.Data;
 import net.fittable.domain.business.Review;
 import net.fittable.domain.business.Studio;
+import net.fittable.domain.premises.Coordinate;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
@@ -16,6 +17,7 @@ public class StudioDto {
     private String town;
     private String areaName;
     private IntroductionDto introduction;
+    private Coordinate coordinate;
     private List<Review> reviews;
     private int reviewCount;
 
@@ -24,6 +26,7 @@ public class StudioDto {
 
         studioDto.setStudioId(String.valueOf(studio.getId()));
         studioDto.setName(studio.getName());
+        studioDto.setCoordinate(studio.getCoordinate());
         studioDto.setAreaName(studio.getLocation().getName());
 
         if(CollectionUtils.isNotEmpty(studio.getReviews())) {
