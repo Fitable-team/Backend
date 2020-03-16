@@ -14,11 +14,11 @@ public class StudioDto {
     private String studioId;
     private String name;
     private double ratings;
+    private String superDistrict;
     private String town;
     private String areaName;
     private IntroductionDto introduction;
     private Coordinate coordinate;
-    private List<Review> reviews;
     private int reviewCount;
 
     public static StudioDto fromStudio(Studio studio) {
@@ -35,11 +35,10 @@ public class StudioDto {
 
         if(studio.getLocation() != null) {
             studioDto.setTown(studio.getLocation().getSuperDistrict() + " " + studio.getLocation().getLowerDistrict());
+            studioDto.setSuperDistrict(studio.getLocation().getSuperDistrict());
         }
 
         studioDto.setIntroduction(IntroductionDto.fromStudio(studio));
-
-        studioDto.setReviews(studio.getReviews());
         studioDto.setReviewCount(studio.getReviews().size());
 
         return studioDto;

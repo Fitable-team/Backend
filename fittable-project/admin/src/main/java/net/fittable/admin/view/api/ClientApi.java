@@ -5,6 +5,7 @@ import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.application.StudioSearchService;
 import net.fittable.admin.view.dto.client.request.LessonSearchDto;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
+import net.fittable.admin.view.dto.client.response.studio.NewReviewResponseDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
 import net.fittable.domain.business.Review;
 import net.fittable.domain.business.reservation.Session;
@@ -34,8 +35,11 @@ public class ClientApi {
     }
 
     @PostMapping(path = "/studios/{studioId}/review")
-    public List<Review> postNewReview(@RequestBody Review review, @PathVariable Long studioId) {
-        return studioManagementService.addNewReviewForStudio(review, studioId).getReviews();
+    public NewReviewResponseDto postNewReview(@RequestBody Review review, @PathVariable Long studioId) {
+        NewReviewResponseDto dto = new NewReviewResponseDto();
+        dto.setReviewCount(studioManagementService.addNewReviewForStudio(review, studioId).getReviewCount());
+
+        return dto;
     }
 
     @GetMapping(path = "/towns")
