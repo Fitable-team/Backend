@@ -8,6 +8,7 @@ import net.fittable.admin.infrastructure.repositories.search.StudioSearchReposit
 import net.fittable.domain.business.SocialAddress;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.StudioFilter;
+import net.fittable.domain.business.StudioImageList;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
 import net.fittable.domain.premises.Location;
@@ -57,6 +58,11 @@ public class CSVDatabaseInitializer {
             if(fields.contains("스튜디오ID")) {
                 continue;
             }
+            StudioImageList imageList = new StudioImageList();
+
+            imageList.setRepresentativeImage(fields.get(2));
+            imageList.setImageDirectories(Arrays.asList(fields.get(3).split(",")));
+
             List<StudioFilter> filters = Arrays.asList(fields.get(10).split(","))
                     .stream()
                     .map(StudioFilter::generateEntity).collect(Collectors.toList());
@@ -81,6 +87,7 @@ public class CSVDatabaseInitializer {
                     .id(Long.parseLong(fields.get(0)))
                     .name(fields.get(1))
                     .location(location)
+                    .imageList(imageList)
                     .topAddress(fields.get(4))
                     .detailedAddress(fields.get(5))
                     .coordinate(Coordinate.builder().latitude(Double.parseDouble(fields.get(6))).longitude(Double.parseDouble(fields.get(7))).build())

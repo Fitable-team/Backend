@@ -69,7 +69,7 @@ public class Studio {
     @JsonIgnore
     private SocialAddress socialAddress;
 
-    @Column(name = "STUDIO_IMAGE_LIST")
+    @Column(name = "STUDIO_IMAGE_LIST", length = 65536)
     @Convert(converter = StudioImageListConverter.class)
     @JsonIgnore
     private StudioImageList imageList;

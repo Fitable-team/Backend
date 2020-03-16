@@ -42,6 +42,6 @@ public class StudioImageList {
             otherImages.add(splittedDirectories[i]);
         }
 
-        return new StudioImageList(splittedDirectories[0], otherImages);
+        return new StudioImageList(representativeImage, otherImages);
     }
 }

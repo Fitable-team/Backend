@@ -13,6 +13,8 @@ public class StudioDto {
 
     private String studioId;
     private String name;
+    private String representativeImage;
+    private List<String> additionalImageHrefs;
     private double ratings;
     private String superDistrict;
     private String town;
@@ -27,6 +29,8 @@ public class StudioDto {
         studioDto.setStudioId(String.valueOf(studio.getId()));
         studioDto.setName(studio.getName());
         studioDto.setCoordinate(studio.getCoordinate());
+        studioDto.setRepresentativeImage(studio.getImageList().getRepresentativeImage());
+        studioDto.setAdditionalImageHrefs(studio.getImageList().getImageDirectories());
         studioDto.setAreaName(studio.getLocation().getName());
 
         if(CollectionUtils.isNotEmpty(studio.getReviews())) {
