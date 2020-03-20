@@ -2,6 +2,7 @@ package net.fittable.admin.application;
 
 import net.fittable.admin.application.components.specifications.SMSNotifyService;
 import net.fittable.admin.infrastructure.repositories.ReservationRepository;
+import net.fittable.admin.infrastructure.repositories.ReviewRepository;
 import net.fittable.admin.infrastructure.repositories.SessionRepository;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.view.dto.TimetableManageDto;
@@ -15,6 +16,7 @@ import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.search.SearchableStudio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class StudioManagementService {
+    private static int REVIEW_PAGE_SIZE = 15;
 
     @Autowired
     private MemberManagementService memberManagementService;
@@ -36,6 +39,9 @@ public class StudioManagementService {
 
     @Autowired
     private SessionRepository sessionRepository;
+
+    @Autowired
+    private ReviewRepository reviewRepository;
 
     private SMSNotifyService notifyService;
 
@@ -70,6 +76,14 @@ public class StudioManagementService {
         targetStudio.addReview(review);
 
         return StudioDto.fromStudio(studioRepository.save(targetStudio));
+    }
+
+    @Transactional(readOnly = true)
+    public List<Review> getPaginatedReviews(Long studioId, int pageNumber) {
+        Studio studio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
+
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, REVIEW_PAGE_SIZE);
+        return reviewRepository.findByTargetStudio(studio, pageRequest);
     }
 
     @Transactional

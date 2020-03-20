@@ -42,6 +42,12 @@ public class ClientApi {
         return dto;
     }
 
+    @GetMapping(path = "/studios/{studioId}/review/{pageNumber}")
+    public List<Review> getPaginatedReviews(@PathVariable Long studioId, @PathVariable int pageNumber) {
+
+        return null;
+    }
+
     @GetMapping(path = "/towns")
     public List<Location> getTownList() {
         return studioSearchService.getTownList();

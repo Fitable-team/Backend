@@ -52,9 +52,9 @@ public class Studio {
     @JsonIgnore
     private StudioOwnerMember owner;
 
-    @OneToMany(mappedBy = "targetStudio", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY)
     @JsonIgnore
-    private Set<Session> sessions = new HashSet<>();
+    private Set<Lesson> lessons = new HashSet<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "STORE_TOWN_ID")
@@ -100,18 +100,12 @@ public class Studio {
         this.location = location;
     }
 
-    public void addSession(Session session) {
-        if(this.sessions.contains(session)) {
+    public void addLesson(Lesson lesson) {
+        if(this.lessons.contains(lesson)) {
             return;
         }
 
-        this.sessions.add(session);
-    }
-
-    public List<Session> getUnreservedSessions() {
-        return this.sessions.stream()
-                .filter(session -> !session.isFullyBooked())
-                .collect(Collectors.toList());
+        this.lessons.add(lesson);
     }
 
     public void addReview(Review review) {

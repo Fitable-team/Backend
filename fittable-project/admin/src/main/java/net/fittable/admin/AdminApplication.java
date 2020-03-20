@@ -42,6 +42,7 @@ public class AdminApplication {
                     ContactInformation.builder().contactInformationValue("031-715-3558").informationType(ContactInformationType.PHONE).build());
 
             initializer.setStudioDatabase();
+            initializer.setTimetableDatabase();
         };
     }
 

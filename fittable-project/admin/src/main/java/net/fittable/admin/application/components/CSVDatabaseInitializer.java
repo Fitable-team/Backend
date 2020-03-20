@@ -5,10 +5,8 @@ import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.infrastructure.repositories.TownRepository;
 import net.fittable.admin.infrastructure.repositories.search.StudioSearchRepository;
-import net.fittable.domain.business.SocialAddress;
-import net.fittable.domain.business.Studio;
-import net.fittable.domain.business.StudioFilter;
-import net.fittable.domain.business.StudioImageList;
+import net.fittable.domain.business.*;
+import net.fittable.domain.business.reservation.RegularSession;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
 import net.fittable.domain.premises.Location;
@@ -102,6 +100,42 @@ public class CSVDatabaseInitializer {
 
     public void setTimetableDatabase() {
         List<String[]> lines = readLineFromTsv(this.timetableFileDir);
+
+        for(String[] line: lines) {
+            Lesson lesson = new Lesson();
+            Studio targetStudio = studioRepository.findByName(line[0]).orElseThrow(() -> new NoSuchElementException("해당하는 명칭의 스튜디오 없음"));
+            RegularSession regularSession = null;
+            Session sessionInfo = new Session();
+
+            List<String> fields = Arrays.asList(line);
+            if(fields.contains("스튜디오ID")) {
+                continue;
+            }
+
+            lesson.setTitle(fields.get(4));
+            lesson.setInstructorName(fields.get(5));
+
+            sessionInfo.setPrice(Integer.parseInt(fields.get(8)));
+
+            if(Boolean.valueOf(fields.get(2))) {
+                regularSession = new RegularSession();
+
+                for(String day: fields.get(3).split(";")) {
+                    regularSession.addRegularDay(day);
+                }
+            }
+
+            sessionInfo.setRegularSession(regularSession);
+
+            Set<Session> sessionSet = new HashSet<>();
+            sessionSet.add(sessionInfo);
+
+            lesson.setSessions(sessionSet);
+            targetStudio.addLesson(lesson);
+
+            studioRepository.save(targetStudio);
+            return;
+        }
     }
 
     private List<String[]> readLineFromTsv(String resourceName) {
