@@ -7,6 +7,7 @@ import net.fittable.domain.business.reservation.Session;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
@@ -36,12 +37,11 @@ public class TimetableManageDto {
     public Session toSession() {
         Session.SessionBuilder builder = Session.builder()
                 .capacity(maxCapacity)
-                .startTime(LocalDateTime.from(TIME_FORMATTER.parse(this.startTime)))
-                .endTime(LocalDateTime.from(TIME_FORMATTER.parse(this.endTime)))
+                .startTime(LocalTime.parse(this.startTime))
+                .endTime(LocalTime.parse(this.endTime))
                 .room(this.room)
                 .classLevel(this.classLevel)
-                .price(this.price)
-                .instructorName(this.instructorName);
+                .price(this.price);
 
         if(this.repeatDays.size() > 0) {
             Session session = builder.build();

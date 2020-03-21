@@ -8,7 +8,9 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -35,9 +37,6 @@ public class Session {
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
     private Studio targetStudio;
 
-    @Column(name = "SESSION_INSTRUCTOR")
-    private String instructorName;
-
     @Column(name = "SESSION_ROOM")
     private String room;
 
@@ -49,10 +48,10 @@ public class Session {
     private ClassLevel classLevel;
 
     @Column(name = "SESSION_STARTTIME")
-    private LocalDateTime startTime;
+    private LocalTime startTime;
 
     @Column(name = "SESSION_ENDTIME")
-    private LocalDateTime endTime;
+    private LocalTime endTime;
 
     @Column(name = "SESSION_REGULAR_DAY")
     @Embedded
@@ -66,10 +65,9 @@ public class Session {
     private int capacity = 1;
 
     @Builder
-    public Session(List<Reservation> reservations, Studio targetStudio, String instructorName, String room, Integer price, ClassLevel classLevel, LocalDateTime startTime, LocalDateTime endTime, RegularSession regularSession, int capacity) {
+    public Session(List<Reservation> reservations, Studio targetStudio, String room, Integer price, ClassLevel classLevel, LocalTime startTime, LocalTime endTime, RegularSession regularSession, int capacity) {
         this.reservations = reservations;
         this.targetStudio = targetStudio;
-        this.instructorName = instructorName;
         this.room = room;
         this.price = price;
         this.classLevel = classLevel;
@@ -87,14 +85,17 @@ public class Session {
         return requestedCapacity > this.capacity || (requestedCapacity == this.capacity);
     }
 
-    public void setAllReservationAsUsed() {
-        if(LocalDateTime.now().toEpochSecond(ZoneOffset.of("Asia/Seoul")) < this.endTime.toEpochSecond(ZoneOffset.of("Asia/Seoul"))) {
-            return;
+    public boolean isOngoingOrSoon() {
+        LocalTime until = LocalTime.now().plus(6, ChronoUnit.HOURS);
+
+        if(this.regularSession != null && this.regularSession.hasRegularSessions()) {
+            if(this.regularSession.isClassScheduledToday()) {
+                return this.startTime.isBefore(until);
+            }
+            return false;
         }
 
-        this.reservations = this.reservations.stream()
-                .peek(r -> r.setUsed(true))
-                .collect(Collectors.toList());
+        return this.startTime.isBefore(until);
     }
 
     @Override

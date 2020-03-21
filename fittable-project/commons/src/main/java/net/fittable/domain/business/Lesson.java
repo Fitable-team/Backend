@@ -1,11 +1,13 @@
 package net.fittable.domain.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 import net.fittable.domain.business.reservation.Session;
 
 import javax.persistence.*;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -32,6 +34,7 @@ public class Lesson {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "LESSON_OWNER_STUDIOID")
+    @JsonIgnore
     private Studio studio;
 
     @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
@@ -45,6 +48,12 @@ public class Lesson {
         return this.sessions.stream()
                 .filter(s -> !s.isFullyBooked())
                 .collect(Collectors.toSet());
+    }
+
+    public List<Session> getAvailableSessions() {
+        return this.sessions.stream()
+                .filter(Session::isOngoingOrSoon)
+                .collect(Collectors.toList());
     }
 
     @Override

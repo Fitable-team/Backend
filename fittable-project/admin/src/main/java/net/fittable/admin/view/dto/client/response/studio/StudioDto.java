@@ -1,12 +1,15 @@
 package net.fittable.admin.view.dto.client.response.studio;
 
 import lombok.Data;
+import net.fittable.admin.view.dto.client.response.lesson.LessonDto;
 import net.fittable.domain.business.Review;
 import net.fittable.domain.business.Studio;
+import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
 import org.apache.commons.collections.CollectionUtils;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 public class StudioDto {
@@ -15,6 +18,8 @@ public class StudioDto {
     private String name;
     private String representativeImage;
     private List<String> additionalImageHrefs;
+    private List<LessonDto> lessons;
+    private List<Session> ongoingSessions;
     private double ratings;
     private String superDistrict;
     private String town;
@@ -32,6 +37,11 @@ public class StudioDto {
         studioDto.setRepresentativeImage(studio.getImageList().getRepresentativeImage());
         studioDto.setAdditionalImageHrefs(studio.getImageList().getImageDirectories());
         studioDto.setAreaName(studio.getLocation().getName());
+        studioDto.setOngoingSessions(studio.currentAvailableSessions());
+
+        if(CollectionUtils.isNotEmpty(studio.getLessons())) {
+            studioDto.setLessons(studio.getLessons().stream().map(LessonDto::fromLesson).collect(Collectors.toList()));
+        }
 
         if(CollectionUtils.isNotEmpty(studio.getReviews())) {
             studioDto.setRatings(studio.getReviews().stream().mapToDouble(Review::getStarPoint).average().getAsDouble());

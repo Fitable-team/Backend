@@ -14,10 +14,11 @@ import java.util.stream.Collectors;
 public class LessonDto {
 
     private String name;
+    private Long studioId;
+    private String studioName;
     private List<Session> allSessions;
     private List<Session> availableSessions;
     private String instructorName;
-    private StudioDto studioInfo;
 
     public static LessonDto fromLesson(Lesson lesson) {
         LessonDto dto = new LessonDto();
@@ -26,7 +27,8 @@ public class LessonDto {
         dto.setAllSessions(new ArrayList<>(lesson.getSessions()));
         dto.setAvailableSessions(lesson.getSessions().stream().filter(s -> !s.isFullyBooked()).collect(Collectors.toList()));
         dto.setInstructorName(lesson.getInstructorName());
-        dto.setStudioInfo(StudioDto.fromStudio(lesson.getStudio()));
+        dto.setStudioName(lesson.getStudio().getName());
+        dto.setStudioId(lesson.getStudio().getId());
 
         return dto;
     }

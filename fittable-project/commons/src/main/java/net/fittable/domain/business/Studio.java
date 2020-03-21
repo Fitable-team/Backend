@@ -12,10 +12,8 @@ import net.fittable.persistence.converters.StudioImageListConverter;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.time.LocalTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Entity
@@ -114,5 +112,14 @@ public class Studio {
         }
 
         this.reviews.add(review);
+    }
+
+    public List<Session> currentAvailableSessions() {
+        List<Session> sessions = new ArrayList<>();
+
+        for(Lesson lesson : this.lessons) {
+            sessions.addAll(lesson.getAvailableSessions());
+        }
+        return sessions;
     }
 }

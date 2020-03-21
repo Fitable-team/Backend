@@ -17,6 +17,7 @@ import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
 import java.io.*;
+import java.time.LocalTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -139,6 +140,9 @@ public class CSVDatabaseInitializer {
 
             sessionInfo.setRegularSession(regularSession);
             sessionInfo.setLesson(lesson);
+
+            sessionInfo.setStartTime(LocalTime.parse(fields.get(6)));
+            sessionInfo.setEndTime(LocalTime.parse(fields.get(7)));
 
             Set<Session> sessionSet = new HashSet<>();
             sessionSet.add(sessionInfo);
