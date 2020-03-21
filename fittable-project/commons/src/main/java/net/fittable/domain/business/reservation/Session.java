@@ -1,9 +1,7 @@
 package net.fittable.domain.business.reservation;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import net.fittable.domain.business.Lesson;
 import net.fittable.domain.business.Studio;
 import org.hibernate.annotations.Cascade;
@@ -12,11 +10,13 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "SESSION")
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 public class Session {
 
@@ -95,5 +95,18 @@ public class Session {
         this.reservations = this.reservations.stream()
                 .peek(r -> r.setUsed(true))
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Session session = (Session) o;
+        return id == session.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

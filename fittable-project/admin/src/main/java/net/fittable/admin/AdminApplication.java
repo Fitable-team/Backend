@@ -23,24 +23,6 @@ public class AdminApplication {
     @Bean
     public CommandLineRunner storeTestData(StudioManagementService managementService, CSVDatabaseInitializer initializer) {
         return args -> {
-            Studio studio = new Studio();
-
-            studio.setName("하스야요가아카데미");
-            studio.setCoordinate(new Coordinate(37.370475, 127.107046));
-            studio.setRepresentativeContact("031-715-3558");
-            studio.setLocation(Location.builder().superDistrict("경기도 성남시 분당구").lowerDistrict("정자동").name("정자동").coordinate(new Coordinate(37.370475, 127.107046)).build());
-            studio.setDetailedAddress("정자동 15-3 폴라리스1건물. 507호");
-            studio.setStudioIntroduction("하스야요가아카데는 하타");
-
-            SocialAddress socialAddress = new SocialAddress();
-            socialAddress.setBlogAddress("https://blog.naver.com/hasya21");
-            socialAddress.setHomepage("http://www.hasya.co.kr");
-
-            studio.setSocialAddress(socialAddress);
-
-            managementService.addNewStudio(studio,
-                    ContactInformation.builder().contactInformationValue("031-715-3558").informationType(ContactInformationType.PHONE).build());
-
             initializer.setStudioDatabase();
             initializer.setTimetableDatabase();
         };

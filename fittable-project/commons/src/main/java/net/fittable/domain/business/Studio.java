@@ -52,7 +52,7 @@ public class Studio {
     @JsonIgnore
     private StudioOwnerMember owner;
 
-    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "studio", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JsonIgnore
     private Set<Lesson> lessons = new HashSet<>();
 

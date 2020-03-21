@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
+import javax.transaction.Transactional;
 import java.io.*;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -98,14 +99,23 @@ public class CSVDatabaseInitializer {
         }
     }
 
+    @Transactional
     public void setTimetableDatabase() {
         List<String[]> lines = readLineFromTsv(this.timetableFileDir);
 
         for(String[] line: lines) {
+            if(Arrays.asList(line).contains("스튜디오명")) {
+                continue;
+            }
+
+            System.out.println(Arrays.asList(line));
             Lesson lesson = new Lesson();
-            Studio targetStudio = studioRepository.findByName(line[0]).orElseThrow(() -> new NoSuchElementException("해당하는 명칭의 스튜디오 없음"));
+            Studio targetStudio = studioRepository.findByName(line[1]).orElseThrow(() -> new NoSuchElementException("해당하는 명칭의 스튜디오 없음"));
             RegularSession regularSession = null;
             Session sessionInfo = new Session();
+
+            lesson.setStudio(targetStudio);
+
 
             List<String> fields = Arrays.asList(line);
             if(fields.contains("스튜디오ID")) {
@@ -115,7 +125,9 @@ public class CSVDatabaseInitializer {
             lesson.setTitle(fields.get(4));
             lesson.setInstructorName(fields.get(5));
 
-            sessionInfo.setPrice(Integer.parseInt(fields.get(8)));
+            if(!fields.get(8).equals("-")) {
+                sessionInfo.setPrice(Integer.parseInt(fields.get(8)));
+            }
 
             if(Boolean.valueOf(fields.get(2))) {
                 regularSession = new RegularSession();
@@ -126,15 +138,16 @@ public class CSVDatabaseInitializer {
             }
 
             sessionInfo.setRegularSession(regularSession);
+            sessionInfo.setLesson(lesson);
 
             Set<Session> sessionSet = new HashSet<>();
             sessionSet.add(sessionInfo);
 
             lesson.setSessions(sessionSet);
             targetStudio.addLesson(lesson);
+            lesson.setStudio(targetStudio);
 
             studioRepository.save(targetStudio);
-            return;
         }
     }
 

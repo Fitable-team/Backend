@@ -1,19 +1,20 @@
 package net.fittable.domain.business;
 
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 import net.fittable.domain.business.reservation.Session;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.CascadeType;
-
 
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 
 @Entity
 @Table(name = "STORE_LESSON")
-@Data
+@Getter
+@Setter
 public class Lesson {
 
     @Id
@@ -29,12 +30,11 @@ public class Lesson {
     @Column(name = "LESSON_INSTRUCTOR")
     private String instructorName;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "LESSON_OWNER_STUDIOID")
     private Studio studio;
 
-    @OneToMany(mappedBy = "lesson")
-    @Cascade(CascadeType.ALL)
+    @OneToMany(mappedBy = "lesson", cascade = CascadeType.ALL)
     private Set<Session> sessions;
 
     public boolean isAvailable() {
@@ -45,5 +45,19 @@ public class Lesson {
         return this.sessions.stream()
                 .filter(s -> !s.isFullyBooked())
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Lesson lesson = (Lesson) o;
+        return id == lesson.id &&
+                Objects.equals(title, lesson.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title);
     }
 }
