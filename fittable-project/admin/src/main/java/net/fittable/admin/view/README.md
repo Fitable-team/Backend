@@ -52,6 +52,9 @@
 {"studios" : Array<Studios>
 ```
 
+### Review Paging API
+`GET "/studios/{studioId}/review/{pageNumber}`
+
 ### 엔티티
 - Lessons
 
