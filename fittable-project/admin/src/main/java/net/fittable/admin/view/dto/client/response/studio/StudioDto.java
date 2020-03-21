@@ -4,6 +4,7 @@ import lombok.Data;
 import net.fittable.admin.view.dto.client.response.lesson.LessonDto;
 import net.fittable.domain.business.Review;
 import net.fittable.domain.business.Studio;
+import net.fittable.domain.business.StudioFilter;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
 import org.apache.commons.collections.CollectionUtils;
@@ -14,12 +15,13 @@ import java.util.stream.Collectors;
 @Data
 public class StudioDto {
 
-    private String studioId;
+    private Long studioId;
     private String name;
     private String representativeImage;
     private List<String> additionalImageHrefs;
     private List<LessonDto> lessons;
     private List<Session> ongoingSessions;
+    private List<String> studioAttributes;
     private double ratings;
     private String superDistrict;
     private String town;
@@ -31,10 +33,11 @@ public class StudioDto {
     public static StudioDto fromStudio(Studio studio) {
         StudioDto studioDto = new StudioDto();
 
-        studioDto.setStudioId(String.valueOf(studio.getId()));
+        studioDto.setStudioId((studio.getId()));
         studioDto.setName(studio.getName());
         studioDto.setCoordinate(studio.getCoordinate());
         studioDto.setRepresentativeImage(studio.getImageList().getRepresentativeImage());
+        studioDto.setStudioAttributes(studio.getStudioAttributes().stream().map(a -> a.getAttribute().getCaption()).collect(Collectors.toList()));
         studioDto.setAdditionalImageHrefs(studio.getImageList().getImageDirectories());
         studioDto.setAreaName(studio.getLocation().getName());
         studioDto.setOngoingSessions(studio.currentAvailableSessions());

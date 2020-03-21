@@ -35,6 +35,7 @@ public class Session {
 
     @ManyToOne
     @JoinColumn(name = "RESERVATION_DESTINATION_ID")
+    @JsonIgnore
     private Studio targetStudio;
 
     @Column(name = "SESSION_ROOM")

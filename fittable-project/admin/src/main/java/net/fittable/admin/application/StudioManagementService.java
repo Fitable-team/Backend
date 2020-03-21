@@ -6,6 +6,7 @@ import net.fittable.admin.infrastructure.repositories.ReviewRepository;
 import net.fittable.admin.infrastructure.repositories.SessionRepository;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.view.dto.TimetableManageDto;
+import net.fittable.admin.view.dto.client.request.ReviewPostDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
 import net.fittable.domain.authentication.Member;
 import net.fittable.domain.authentication.StudioOwnerMember;
@@ -71,9 +72,16 @@ public class StudioManagementService {
     }
 
     @Transactional
-    public StudioDto addNewReviewForStudio(Review review, Long studioId) {
-        Studio targetStudio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
-        targetStudio.addReview(review);
+    public StudioDto addNewReviewForStudio(ReviewPostDto review) {
+        Studio targetStudio = studioRepository.findById(review.getStudioId()).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
+
+        Review reviewEntity = new Review();
+
+        reviewEntity.setStarPoint(review.getRating());
+        reviewEntity.setContent(review.getContent());
+        reviewEntity.setTargetStudio(targetStudio);
+
+        targetStudio.addReview(reviewEntity);
 
         return StudioDto.fromStudio(studioRepository.save(targetStudio));
     }

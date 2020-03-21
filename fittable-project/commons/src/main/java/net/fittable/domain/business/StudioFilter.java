@@ -1,5 +1,6 @@
 package net.fittable.domain.business;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import lombok.Generated;
 import lombok.NoArgsConstructor;
@@ -16,12 +17,14 @@ public class StudioFilter {
 
     @Id
     @GeneratedValue
+    @JsonIgnore
     private long id;
 
     @Enumerated(EnumType.STRING)
     private Amenity attribute;
 
     @ManyToMany
+    @JsonIgnore
     private List<Studio> studiosWithAttribute;
 
     public static StudioFilter generateEntity(String attribute) {

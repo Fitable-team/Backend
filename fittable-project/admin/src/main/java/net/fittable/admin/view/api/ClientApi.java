@@ -5,6 +5,7 @@ import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.application.StudioSearchService;
 import net.fittable.admin.view.dto.client.request.LessonSearchDto;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
+import net.fittable.admin.view.dto.client.request.ReviewPostDto;
 import net.fittable.admin.view.dto.client.response.studio.NewReviewResponseDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
 import net.fittable.domain.business.Review;
@@ -34,10 +35,10 @@ public class ClientApi {
         return studioManagementService.getSingleStudio(studioId);
     }
 
-    @PostMapping(path = "/studios/{studioId}/review")
-    public NewReviewResponseDto postNewReview(@RequestBody Review review, @PathVariable Long studioId) {
+    @PostMapping(path = "/studios/review")
+    public NewReviewResponseDto postNewReview(@RequestBody ReviewPostDto review) {
         NewReviewResponseDto dto = new NewReviewResponseDto();
-        dto.setReviewCount(studioManagementService.addNewReviewForStudio(review, studioId).getReviewCount());
+        dto.setReviewCount(studioManagementService.addNewReviewForStudio(review).getReviewCount());
 
         return dto;
     }
