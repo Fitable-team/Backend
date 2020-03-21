@@ -65,6 +65,7 @@ public class StudioSearchRepository {
                 .map(map -> {
                     SearchableStudio studio = SearchableStudio.emptyObject();
 
+                    studio.setId((Long)map.get("studioId"));
                     studio.setName((String)map.get("name"));
                     studio.setLowerDistrict((String)map.get("lowerDistrict"));
                     studio.setSuperDistrict((String)map.get("superDistrict"));
@@ -79,7 +80,5 @@ public class StudioSearchRepository {
 
     public void saveNewStudio(SearchableStudio studio) {
         IndexRequest indexRequest = new IndexRequest("studio");
-
-
     }
 }

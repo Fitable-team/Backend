@@ -57,7 +57,7 @@ public class ClientApi {
     @PostMapping(path = "/location")
     public List<StudioDto> getStudioByLocation(@RequestBody LocationStudioSearchDto dto) {
         if(dto.isLocationBasedSearch()) {
-            return null;
+            return studioSearchService.findBySearchConditions(dto);
         }
         return studioSearchService.findByTownName(dto.getTownName());
     }
