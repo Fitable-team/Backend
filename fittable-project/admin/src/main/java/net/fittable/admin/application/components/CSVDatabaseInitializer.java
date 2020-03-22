@@ -61,7 +61,7 @@ public class CSVDatabaseInitializer {
             StudioImageList imageList = new StudioImageList();
 
             imageList.setRepresentativeImage(fields.get(2));
-            imageList.setImageDirectories(Arrays.asList(fields.get(3).split(",")));
+            imageList.setImageDirectories(Arrays.asList(fields.get(3).split(";")));
 
             List<StudioFilter> filters = Arrays.asList(fields.get(10).split(","))
                     .stream()

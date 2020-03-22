@@ -122,4 +122,10 @@ public class Studio {
         }
         return sessions;
     }
+
+    public List<Session> getAllSessions() {
+        return this.lessons.stream()
+                .flatMap(l -> l.getSessions().stream())
+                .collect(Collectors.toList());
+    }
 }

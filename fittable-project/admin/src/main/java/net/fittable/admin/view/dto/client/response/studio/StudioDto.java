@@ -21,6 +21,7 @@ public class StudioDto {
     private List<String> additionalImageHrefs;
     private List<LessonDto> lessons;
     private List<Session> ongoingSessions;
+    private List<Session> allSessions;
     private List<String> studioAttributes;
     private double ratings;
     private String superDistrict;
@@ -41,6 +42,7 @@ public class StudioDto {
         studioDto.setAdditionalImageHrefs(studio.getImageList().getImageDirectories());
         studioDto.setAreaName(studio.getLocation().getName());
         studioDto.setOngoingSessions(studio.currentAvailableSessions());
+        studioDto.setAllSessions(studio.getAllSessions());
 
         if(CollectionUtils.isNotEmpty(studio.getLessons())) {
             studioDto.setLessons(studio.getLessons().stream().map(LessonDto::fromLesson).collect(Collectors.toList()));
