@@ -43,6 +43,7 @@ public class StudioDto {
         studioDto.setAreaName(studio.getLocation().getName());
         studioDto.setOngoingSessions(studio.currentAvailableSessions());
         studioDto.setAllSessions(studio.getAllSessions());
+        studioDto.setRatings(studio.getAverageRating());
 
         if(CollectionUtils.isNotEmpty(studio.getLessons())) {
             studioDto.setLessons(studio.getLessons().stream().map(LessonDto::fromLesson).collect(Collectors.toList()));

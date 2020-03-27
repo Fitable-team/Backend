@@ -128,4 +128,11 @@ public class Studio {
                 .flatMap(l -> l.getSessions().stream())
                 .collect(Collectors.toList());
     }
+
+    public Double getAverageRating() {
+        return this.reviews.stream()
+                .mapToDouble(Review::getStarPoint)
+                .average()
+                .orElse(0.0D);
+    }
 }

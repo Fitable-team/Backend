@@ -53,7 +53,19 @@
 ```
 
 ### Review Paging API
-`GET "/studios/{studioId}/review/{pageNumber}`
+`GET "/api/v1/studios/{studioId}/review/{pageNumber}`
+
+### Review 작성 API 
+`POST /api/v1/studios/review`
+
+```json
+{
+  "studioId" : {studio ID},
+  "rating" : 2.5,
+  "content" : "그저 그랬어요."
+}
+
+```
 
 ### 엔티티
 - Lessons
