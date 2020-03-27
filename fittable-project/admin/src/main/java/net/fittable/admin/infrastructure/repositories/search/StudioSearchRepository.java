@@ -1,15 +1,20 @@
 package net.fittable.admin.infrastructure.repositories.search;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
+import net.fittable.domain.search.LocationMapping;
 import net.fittable.domain.search.SearchableStudio;
 import org.apache.commons.lang3.StringUtils;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.action.index.IndexResponse;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
 import org.elasticsearch.common.unit.DistanceUnit;
+import org.elasticsearch.common.xcontent.XContentType;
 import org.elasticsearch.index.query.BoolQueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.index.query.RangeQueryBuilder;
@@ -71,14 +76,36 @@ public class StudioSearchRepository {
                     studio.setSuperDistrict((String)map.get("superDistrict"));
 
                     Map<String, Double> locationMap = (Map<String, Double>)map.get("location");
-                    studio.setLatitude(locationMap.get("latitude"));
-                    studio.setLongitude(locationMap.get("longitude"));
+                    LocationMapping locationMapping = LocationMapping.builder().lat(locationMap.get("lat")).lon(locationMap.get("lon")).build();
+
+                    studio.setLocation(locationMapping);
 
                     return studio;
                 }).collect(Collectors.toList());
     }
 
     public void saveNewStudio(SearchableStudio studio) {
-        IndexRequest indexRequest = new IndexRequest("studio");
+        ObjectMapper mapper = new ObjectMapper();
+
+        String jsonString = null;
+        try {
+            jsonString = mapper.writeValueAsString(studio);
+        } catch (JsonProcessingException e) {
+            log.error("error while processing object to json: ", e);
+            return;
+        }
+
+        IndexRequest indexRequest = new IndexRequest("studios");
+        indexRequest.id(String.valueOf(studio.getId())).source(jsonString, XContentType.JSON);
+
+        IndexResponse response = null;
+
+        try {
+            response = esClient.index(indexRequest, RequestOptions.DEFAULT);
+        } catch (IOException e) {
+            log.error("error while passing object to ES cluster: ", e);
+            return;
+        }
+        log.debug("indexed document: {}", response);
     }
 }

@@ -19,6 +19,6 @@ public class ElasticsearchClientConfiguration {
     @Bean
     public RestHighLevelClient esClient() {
         return new RestHighLevelClient(
-                RestClient.builder(new HttpHost(endpoint, port, "https")));
+                RestClient.builder(new HttpHost(endpoint, port, "http")));
     }
 }

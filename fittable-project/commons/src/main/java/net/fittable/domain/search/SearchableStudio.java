@@ -14,18 +14,18 @@ public class SearchableStudio {
     private String town;
     private String superDistrict;
     private String lowerDistrict;
-    private double latitude;
-    private double longitude;
+    private LocationMapping location;
 
     public static SearchableStudio fromStudio(Studio studio) {
+        LocationMapping locationMapping = LocationMapping.builder().lat(studio.getCoordinate().getLatitude()).lon(studio.getCoordinate().getLongitude()).build();
+
         return SearchableStudio.builder()
                 .id(studio.getId())
                 .name(studio.getName())
                 .town(studio.getLocation().getName())
                 .superDistrict(studio.getLocation().getSuperDistrict())
                 .lowerDistrict(studio.getLocation().getLowerDistrict())
-                .latitude(studio.getCoordinate().getLatitude())
-                .longitude(studio.getCoordinate().getLongitude())
+                .location(locationMapping)
                 .build();
     }
 

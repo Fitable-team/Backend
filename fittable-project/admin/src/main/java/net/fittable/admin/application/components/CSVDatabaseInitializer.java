@@ -10,6 +10,7 @@ import net.fittable.domain.business.reservation.RegularSession;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.premises.Coordinate;
 import net.fittable.domain.premises.Location;
+import net.fittable.domain.search.SearchableStudio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -97,6 +98,7 @@ public class CSVDatabaseInitializer {
                     .build();
 
             studioRepository.save(studio);
+            studioSearchRepository.saveNewStudio(SearchableStudio.fromStudio(studio));
         }
     }
 
