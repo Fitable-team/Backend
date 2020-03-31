@@ -7,6 +7,7 @@ import net.fittable.admin.infrastructure.repositories.SessionRepository;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.view.dto.TimetableManageDto;
 import net.fittable.admin.view.dto.client.request.ReviewPostDto;
+import net.fittable.admin.view.dto.client.response.studio.ReviewListDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
 import net.fittable.domain.authentication.Member;
 import net.fittable.domain.authentication.StudioOwnerMember;
@@ -17,6 +18,7 @@ import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.search.SearchableStudio;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -89,11 +91,13 @@ public class StudioManagementService {
     }
 
     @Transactional(readOnly = true)
-    public List<Review> getPaginatedReviews(Long studioId, int pageNumber) {
+    public ReviewListDto getPaginatedReviews(Long studioId, int pageNumber) {
         Studio studio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
 
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, REVIEW_PAGE_SIZE);
-        return reviewRepository.findByTargetStudio(studio, pageRequest);
+        Page<Review> pageResponse = reviewRepository.findByTargetStudio(studio, pageRequest);
+
+        return ReviewListDto.builder().hasNextPage(pageResponse.hasNext()).reviews(pageResponse.getContent()).build();
     }
 
     @Transactional
