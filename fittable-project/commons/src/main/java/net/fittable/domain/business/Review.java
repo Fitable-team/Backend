@@ -7,6 +7,7 @@ import net.fittable.domain.authentication.enums.MemberAuthority;
 import net.fittable.domain.business.reservation.Reservation;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "STORE_REVIEW")
@@ -21,6 +22,8 @@ public class Review implements BatchDeletable {
     private double starPoint;
 
     private String ownersReply;
+
+    private LocalDateTime createdDateTime;
 
     @JsonIgnore
     private boolean deleted;
