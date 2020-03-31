@@ -7,6 +7,7 @@ import net.fittable.admin.view.dto.client.request.LessonSearchDto;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
 import net.fittable.admin.view.dto.client.request.ReviewPostDto;
 import net.fittable.admin.view.dto.client.response.studio.NewReviewResponseDto;
+import net.fittable.admin.view.dto.client.response.studio.ReviewListDto;
 import net.fittable.admin.view.dto.client.response.studio.StudioDto;
 import net.fittable.domain.business.Review;
 import net.fittable.domain.business.reservation.Session;
@@ -44,7 +45,7 @@ public class ClientApi {
     }
 
     @GetMapping(path = "/studios/{studioId}/review/{pageNumber}")
-    public List<Review> getPaginatedReviews(@PathVariable Long studioId, @PathVariable int pageNumber) {
+    public ReviewListDto getPaginatedReviews(@PathVariable Long studioId, @PathVariable int pageNumber) {
 
         return studioManagementService.getPaginatedReviews(studioId, pageNumber);
     }
