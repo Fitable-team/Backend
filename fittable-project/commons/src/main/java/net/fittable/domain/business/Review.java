@@ -18,6 +18,8 @@ public class Review implements BatchDeletable {
     @GeneratedValue
     private long id;
 
+    private String authorsName;
+
     private String content;
     private double starPoint;
 

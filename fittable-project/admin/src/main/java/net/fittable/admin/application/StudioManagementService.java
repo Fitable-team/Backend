@@ -17,6 +17,7 @@ import net.fittable.domain.business.Review;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.search.SearchableStudio;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -84,6 +85,13 @@ public class StudioManagementService {
         reviewEntity.setContent(review.getContent());
         reviewEntity.setTargetStudio(targetStudio);
         reviewEntity.setCreatedDateTime(LocalDateTime.now());
+
+        if(StringUtils.isNotEmpty(review.getAuthorsName())) {
+            reviewEntity.setAuthorsName(review.getAuthorsName());
+            targetStudio.addReview(reviewEntity);
+
+            return StudioDto.fromStudio(studioRepository.save(targetStudio));
+        }
 
         targetStudio.addReview(reviewEntity);
 
