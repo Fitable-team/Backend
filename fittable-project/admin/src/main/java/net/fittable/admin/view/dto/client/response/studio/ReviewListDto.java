@@ -11,6 +11,7 @@ import java.util.List;
 @Builder
 public class ReviewListDto {
 
+    private Integer currentPage;
     private boolean hasNextPage;
     private List<Review> reviews;
 }

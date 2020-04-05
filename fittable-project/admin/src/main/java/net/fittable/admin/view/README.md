@@ -49,11 +49,19 @@
 
 - response body
 ```json
-{"studios" : Array<Studios>
+{"studios" : Array<Studios>}
 ```
 
 ### Review Paging API
 `GET "/api/v1/studios/{studioId}/review/{pageNumber}`
+```json
+{
+  "currentPage": Integer,
+  "hasNextPage" : boolean, 
+  "reviews" : List<Review> 
+}
+
+```
 
 ### Review 작성 API 
 `POST /api/v1/studios/review`
@@ -62,7 +70,8 @@
 {
   "studioId" : {studio ID},
   "rating" : 2.5,
-  "content" : "그저 그랬어요."
+  "content" : "그저 그랬어요.",
+  "authorsName" : "이말년"
 }
 
 ```
