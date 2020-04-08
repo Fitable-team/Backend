@@ -55,7 +55,7 @@ public class Review implements BatchDeletable {
         return this.originatedReservation.getTargetSession().getTargetStudio().getOwner().equals(member);
     }
 
-    @JsonProperty("writtenTimeMillis")
+    @JsonProperty("writtenTimeSeconds")
     public long getWrittenTimeMillis() {
         return this.createdDateTime.toEpochSecond(ZoneOffset.UTC);
     }

@@ -105,7 +105,7 @@ public class StudioManagementService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, REVIEW_PAGE_SIZE);
         Page<Review> pageResponse = reviewRepository.findByTargetStudio(studio, pageRequest);
 
-        return ReviewListDto.builder().currentPage(pageResponse.getNumber()).hasNextPage(pageResponse.hasNext()).reviews(pageResponse.getContent()).build();
+        return ReviewListDto.builder().currentPage(pageResponse.getNumber() - 1).hasNextPage(pageResponse.hasNext()).reviews(pageResponse.getContent()).build();
     }
 
     @Transactional
