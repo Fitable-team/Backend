@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -105,7 +106,12 @@ public class StudioManagementService {
         PageRequest pageRequest = PageRequest.of(pageNumber - 1, REVIEW_PAGE_SIZE);
         Page<Review> pageResponse = reviewRepository.findByTargetStudio(studio, pageRequest);
 
-        return ReviewListDto.builder().currentPage(pageResponse.getNumber() - 1).hasNextPage(pageResponse.hasNext()).reviews(pageResponse.getContent()).build();
+        List<Review> reviews = pageResponse.getContent();
+        reviews.sort((c1, c2) -> c2.getCreatedDateTime().toEpochSecond(ZoneOffset.UTC) > c1.getCreatedDateTime().toEpochSecond(ZoneOffset.UTC) ? 1 : -1);
+
+        return ReviewListDto.builder().currentPage(pageResponse.getNumber() + 1).hasNextPage(pageResponse.hasNext())
+                .reviews(reviews)
+                .build();
     }
 
     @Transactional
