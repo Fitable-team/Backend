@@ -17,10 +17,12 @@ import net.fittable.domain.business.Review;
 import net.fittable.domain.business.Studio;
 import net.fittable.domain.business.reservation.Session;
 import net.fittable.domain.search.SearchableStudio;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -103,11 +105,13 @@ public class StudioManagementService {
     public ReviewListDto getPaginatedReviews(Long studioId, int pageNumber) {
         Studio studio = studioRepository.findById(studioId).orElseThrow(() -> new NoSuchElementException("해당하는 아이디의 스튜디오가 없음."));
 
-        PageRequest pageRequest = PageRequest.of(pageNumber - 1, REVIEW_PAGE_SIZE);
+        PageRequest pageRequest = PageRequest.of(pageNumber - 1, REVIEW_PAGE_SIZE, Sort.by(Sort.Direction.DESC, "createdDateTime"));
         Page<Review> pageResponse = reviewRepository.findByTargetStudio(studio, pageRequest);
 
         List<Review> reviews = pageResponse.getContent();
-        reviews.sort((c1, c2) -> c2.getCreatedDateTime().toEpochSecond(ZoneOffset.UTC) > c1.getCreatedDateTime().toEpochSecond(ZoneOffset.UTC) ? 1 : -1);
+        if(CollectionUtils.isEmpty(reviews)) {
+            throw new NoSuchElementException("리뷰가 존재하지 않습니다.");
+        }
 
         return ReviewListDto.builder().currentPage(pageResponse.getNumber() + 1).hasNextPage(pageResponse.hasNext())
                 .reviews(reviews)

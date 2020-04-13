@@ -3,6 +3,7 @@ package net.fittable.admin.view.api;
 import net.fittable.admin.application.LessonService;
 import net.fittable.admin.application.StudioManagementService;
 import net.fittable.admin.application.StudioSearchService;
+import net.fittable.admin.view.dto.BaseApiResult;
 import net.fittable.admin.view.dto.client.request.LessonSearchDto;
 import net.fittable.admin.view.dto.client.request.LocationStudioSearchDto;
 import net.fittable.admin.view.dto.client.request.ReviewPostDto;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping(path = "/api/v1")
@@ -73,5 +75,10 @@ public class ClientApi {
         dto.setTargetStudioIds(Arrays.asList(studioIds.split(",")));
 
         return lessonService.findLessons(dto);
+    }
+
+    @ExceptionHandler(NoSuchElementException.class)
+    public BaseApiResult notFoundException() {
+        return BaseApiResult.notFound();
     }
 }

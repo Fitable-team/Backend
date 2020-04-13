@@ -28,7 +28,7 @@ public class Review implements BatchDeletable {
     private String ownersReply;
 
     @JsonIgnore
-    private LocalDateTime createdDateTime;
+    private LocalDateTime createdDateTime = LocalDateTime.now();
 
     @JsonIgnore
     private boolean deleted;

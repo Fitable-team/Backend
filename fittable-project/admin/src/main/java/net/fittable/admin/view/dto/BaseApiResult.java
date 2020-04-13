@@ -18,4 +18,8 @@ public class BaseApiResult {
     public static BaseApiResult ok() {
         return new BaseApiResult(200, "OK" ,"요청에 성공하였습니다.");
     }
+
+    public static BaseApiResult notFound() {
+        return new BaseApiResult(404, "NOT_FOUND", "요청하는 데이터가 없습니다.");
+    }
 }
