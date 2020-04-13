@@ -2,9 +2,11 @@ package net.fittable.admin.application.components;
 
 import lombok.extern.slf4j.Slf4j;
 import net.fittable.admin.application.StudioManagementService;
+import net.fittable.admin.infrastructure.repositories.ReviewRepository;
 import net.fittable.admin.infrastructure.repositories.StudioRepository;
 import net.fittable.admin.infrastructure.repositories.TownRepository;
 import net.fittable.admin.infrastructure.repositories.search.StudioSearchRepository;
+import net.fittable.admin.view.dto.client.request.ReviewPostDto;
 import net.fittable.domain.business.*;
 import net.fittable.domain.business.reservation.RegularSession;
 import net.fittable.domain.business.reservation.Session;
@@ -38,6 +40,9 @@ public class CSVDatabaseInitializer {
     private StudioRepository studioRepository;
 
     @Autowired
+    private ReviewRepository reviewRepository;
+
+    @Autowired
     private StudioSearchRepository studioSearchRepository;
 
     public CSVDatabaseInitializer(StudioManagementService studioManagementService,
@@ -48,6 +53,7 @@ public class CSVDatabaseInitializer {
         this.timetableFileDir = timetableFileDir;
     }
 
+    @Transactional
     public void setStudioDatabase() {
         List<String[]> lines = readLineFromTsv(this.studioFileDir);
 
@@ -157,6 +163,16 @@ public class CSVDatabaseInitializer {
         }
     }
 
+    @Transactional
+    public void setReviews() {
+        List<Studio> studios = studioRepository.findAll();
+
+        for(Studio studio: studios) {
+            List<ReviewPostDto> generatedReviews = newReviewRequests(studio.getId());
+            generatedReviews.forEach(studioManagementService::addNewReviewForStudio);
+        }
+    }
+
     private List<String[]> readLineFromTsv(String resourceName) {
         List<String[]> parsedRows = new ArrayList<>();
 
@@ -180,6 +196,34 @@ public class CSVDatabaseInitializer {
 
     private List<Session> parseTimetableInformation() {
         return null;
+    }
+
+    private List<ReviewPostDto> newReviewRequests(Long studioId) {
+        List<ReviewPostDto> dtos = new ArrayList<>();
+        for(int i = 0; i < 3; i++) {
+            ReviewPostDto dto = new ReviewPostDto();
+
+            dto.setAuthorsName(generateAuthorName(i));
+            dto.setContent("요가 맛집이네요!");
+            dto.setRating(7.5D);
+            dto.setStudioId(studioId);
+
+            dtos.add(dto);
+        }
+        return dtos;
+    }
+
+    private String generateAuthorName(int index) {
+        switch(index) {
+            case 0:
+                return "이말년";
+            case 1:
+                return "주호민";
+            case 2:
+                return "류혜영";
+            default:
+                return "";
+        }
     }
 
 

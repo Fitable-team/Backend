@@ -21,10 +21,11 @@ public class AdminApplication {
     }
 
     @Bean
-    public CommandLineRunner storeTestData(StudioManagementService managementService, CSVDatabaseInitializer initializer) {
+    public CommandLineRunner storeTestData(CSVDatabaseInitializer initializer) {
         return args -> {
             initializer.setStudioDatabase();
             initializer.setTimetableDatabase();
+            initializer.setReviews();
         };
     }
 
